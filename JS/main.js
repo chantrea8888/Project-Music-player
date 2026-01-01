@@ -567,6 +567,47 @@ document.addEventListener('DOMContentLoaded', function () {
             elements.searchArtistsList.appendChild(artistElement);
         });
     }
+    //Display playlist search results
+    function displayPlaylistSearchResults() {
+        elements.searchPlaylistsList.innerHTML = '';
+
+        state.searchResults.playlists.forEach(playlist => {
+            const playlistElement = document.createElement('div');
+            playlistElement.className = 'col-md-4 mb-3';
+            playlistElement.innerHTML = `
+                        <div class="card h-100 playlist-card">
+                            <img src="${playlist.image}" class="card-img-top" alt="${playlist.name}" style="height: 150px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">${playlist.name}</h5>
+                                <p class="card-text text-muted">${playlist.description}</p>
+                                <p class="card-text"><small class="text-muted">${playlist.songs.length} songs</small></p>
+                                <div class="d-flex justify-content-between playlist-actions">
+                                    <button class="btn btn-sm btn-custom play-playlist-search-btn" data-id="${playlist.id}" title="Play Playlist">
+                                        <i class="fas fa-play me-1"></i> Play
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-custom edit-playlist-search-btn" data-id="${playlist.id}" title="Edit Playlist">
+                                        <i class="fas fa-edit me-1"></i> Edit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+            // Add event listeners
+            const playBtn = playlistElement.querySelector('.play-playlist-search-btn');
+            playBtn.addEventListener('click', function () {
+                playPlaylist(playlist.id);
+                showSection('library');
+            });
+
+            const editBtn = playlistElement.querySelector('.edit-playlist-search-btn');
+            editBtn.addEventListener('click', function () {
+                editPlaylist(playlist.id);
+            });
+
+            elements.searchPlaylistsList.appendChild(playlistElement);
+        });
+    }
 
 });
 
