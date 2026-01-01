@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // UI state
         tutorialMode: false
     };
-    
+
     // ============================================
     // SAMPLE DATA
     // ============================================
@@ -164,6 +164,124 @@ document.addEventListener('DOMContentLoaded', function () {
             image: "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
         }
     ];
+
+
+    // ============================================
+    // DOM ELEMENTS
+    // ============================================
+
+    const elements = {
+        // Player controls
+        playPauseBtn: document.getElementById('play-pause-btn'),
+        prevBtn: document.getElementById('prev-btn'),
+        nextBtn: document.getElementById('next-btn'),
+        shuffleBtn: document.getElementById('shuffle-btn'),
+        loopBtn: document.getElementById('loop-btn'),
+        volumeSlider: document.getElementById('volume-slider'),
+
+        // Progress and time
+        progressBar: document.getElementById('song-progress'),
+        currentTimeEl: document.getElementById('current-time'),
+        totalTimeEl: document.getElementById('total-time'),
+
+        // Song info
+        songTitleEl: document.getElementById('song-title'),
+        songArtistEl: document.getElementById('song-artist'),
+        albumArtEl: document.getElementById('album-art'),
+
+        // Playlists and lists
+        nowPlayingList: document.getElementById('now-playing-list'),
+        playlistsContainer: document.getElementById('playlists-container'),
+        sidebarPlaylists: document.getElementById('sidebar-playlists'),
+        uploadedSongs: document.getElementById('uploaded-songs'),
+        clearPlaylistBtn: document.getElementById('clear-playlist-btn'),
+
+        // Lyrics
+        lyricsContainer: document.getElementById('lyrics-container'),
+
+        // Visualization
+        visualizerCanvas: document.getElementById('visualizer-canvas'),
+        visualizerCtx: null,
+
+        // Crossfade
+        crossfadeToggle: document.getElementById('crossfade-toggle'),
+        crossfadeDurationSlider: document.getElementById('crossfade-duration'),
+        crossfadeValueDisplay: document.getElementById('crossfade-value'),
+
+        // SEARCH ELEMENTS
+        globalSearchContainer: document.getElementById('global-search-container'),
+        globalSearchInput: document.getElementById('global-search-input'),
+        searchClearBtn: document.getElementById('search-clear-btn'),
+        searchResults: document.getElementById('search-results'),
+        searchResultsList: document.getElementById('search-results-list'),
+        searchResultsCount: document.getElementById('search-results-count'),
+        quickSearchBtn: document.getElementById('quick-search-btn'),
+        sidebarSearch: document.getElementById('sidebar-search'),
+        sidebarSearchBtn: document.getElementById('sidebar-search-btn'),
+
+        // Search filters
+        searchFilterBtns: document.querySelectorAll('.search-filter-btn'),
+
+        // Search section elements
+        searchSongsResults: document.getElementById('search-songs-results'),
+        searchArtistsResults: document.getElementById('search-artists-results'),
+        searchPlaylistsResults: document.getElementById('search-playlists-results'),
+        searchAlbumsResults: document.getElementById('search-albums-results'),
+        searchNoResults: document.getElementById('search-no-results'),
+        searchInitialState: document.getElementById('search-initial-state'),
+        searchSongsList: document.getElementById('search-songs-list'),
+        searchArtistsList: document.getElementById('search-artists-list'),
+        searchPlaylistsList: document.getElementById('search-playlists-list'),
+        searchAlbumsList: document.getElementById('search-albums-list'),
+        songsResultsCount: document.getElementById('songs-results-count'),
+        artistsResultsCount: document.getElementById('artists-results-count'),
+        playlistsResultsCount: document.getElementById('playlists-results-count'),
+        albumsResultsCount: document.getElementById('albums-results-count'),
+        advancedSearchBtn: document.getElementById('advanced-search-btn'),
+
+        // Search statistics
+        totalSongsCount: document.getElementById('total-songs-count'),
+        totalArtistsCount: document.getElementById('total-artists-count'),
+        totalPlaylistsCount: document.getElementById('total-playlists-count'),
+        uploadedCount: document.getElementById('uploaded-count'),
+        nowPlayingCount: document.getElementById('now-playing-count'),
+        uploadedSongsCount: document.getElementById('uploaded-songs-count'),
+
+        // Navigation
+        navLibrary: document.getElementById('nav-library'),
+        navPlaylists: document.getElementById('nav-playlists'),
+        navUpload: document.getElementById('nav-upload'),
+        navLyrics: document.getElementById('nav-lyrics'),
+        navSearch: document.getElementById('nav-search'),
+        navSettings: document.getElementById('nav-settings'),
+
+        // Sections
+        librarySection: document.getElementById('library-section'),
+        playlistsSection: document.getElementById('playlists-section'),
+        uploadSection: document.getElementById('upload-section'),
+        lyricsSection: document.getElementById('lyrics-section'),
+        searchSection: document.getElementById('search-section'),
+        settingsSection: document.getElementById('settings-section'),
+
+        // File upload
+        fileInput: document.getElementById('file-input'),
+        uploadArea: document.getElementById('upload-area'),
+        browseFilesBtn: document.getElementById('browse-files-btn'),
+
+        // Other buttons
+        toggleShuffleBtn: document.getElementById('toggle-shuffle'),
+        toggleLoopBtn: document.getElementById('toggle-loop'),
+        addToPlaylistBtn: document.getElementById('add-to-playlist'),
+        createPlaylistBtn: document.getElementById('create-playlist-btn'),
+        uploadLyricsBtn: document.getElementById('upload-lyrics-btn'),
+
+        // Status indicator
+        statusIndicator: document.getElementById('status-indicator'),
+        statusMessage: document.getElementById('status-message'),
+
+        // Keyboard hint
+        keyboardHint: document.getElementById('keyboard-hint')
+    };
 
 });
 
