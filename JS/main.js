@@ -283,5 +283,21 @@ document.addEventListener('DOMContentLoaded', function () {
         keyboardHint: document.getElementById('keyboard-hint')
     };
 
+    // Initialize canvas context
+    if (elements.visualizerCanvas) {
+        elements.visualizerCtx = elements.visualizerCanvas.getContext('2d');
+    }
+
+    // ============================================
+    // SEARCH FEATURE FUNCTIONS
+    // ============================================
+
+    // Purpose: Initialize all songs data (sample + uploaded)
+    function initializeAllSongs() {
+        const uploadedSongs = getUploadedSongsFromLocalStorage();
+        state.allSongs = [...sampleSongs, ...uploadedSongs];
+        updateSearchStatistics();
+    }
+
 });
 
