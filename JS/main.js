@@ -299,5 +299,21 @@ document.addEventListener('DOMContentLoaded', function () {
         updateSearchStatistics();
     }
 
+    //Update search statistics display
+    function updateSearchStatistics() {
+        const uploadedSongs = getUploadedSongsFromLocalStorage();
+        const allSongs = [...sampleSongs, ...uploadedSongs];
+
+        // Get unique artists
+        const artists = [...new Set(allSongs.map(song => song.artist))];
+
+        elements.totalSongsCount.textContent = allSongs.length;
+        elements.totalArtistsCount.textContent = artists.length;
+        elements.totalPlaylistsCount.textContent = state.playlists.length;
+        elements.uploadedCount.textContent = uploadedSongs.length;
+        elements.nowPlayingCount.textContent = `${state.currentPlaylist.length} songs`;
+        elements.uploadedSongsCount.textContent = `${uploadedSongs.length} songs`;
+    }
+
 });
 
