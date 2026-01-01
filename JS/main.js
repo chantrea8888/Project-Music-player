@@ -528,6 +528,45 @@ document.addEventListener('DOMContentLoaded', function () {
             elements.searchSongsList.appendChild(songElement);
         });
     }
+    //Display artist search results
+    function displayArtistSearchResults() {
+        elements.searchArtistsList.innerHTML = '';
+
+        state.searchResults.artists.forEach(artistName => {
+            // Get songs by this artist
+            const artistSongs = getAllSongs().filter(song => song.artist === artistName);
+            const albumCount = [...new Set(artistSongs.map(song => song.album))].length;
+
+            const artistElement = document.createElement('div');
+            artistElement.className = 'col-md-4 mb-3';
+            artistElement.innerHTML = `
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center mx-auto mb-3" 
+                                     style="width: 80px; height: 80px;">
+                                    <i class="fas fa-user fa-2x text-white"></i>
+                                </div>
+                                <h5 class="card-title">${artistName}</h5>
+                                <p class="card-text text-muted">
+                                    ${artistSongs.length} song${artistSongs.length !== 1 ? 's' : ''}
+                                    ${albumCount > 0 ? ` • ${albumCount} album${albumCount !== 1 ? 's' : ''}` : ''}
+                                </p>
+                                <button class="btn btn-sm btn-custom play-artist-btn" data-artist="${artistName}" title="Play Artist">
+                                    <i class="fas fa-play me-1"></i> Play Artist
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+            // Add event listener
+            const playBtn = artistElement.querySelector('.play-artist-btn');
+            playBtn.addEventListener('click', function () {
+                playArtist(artistName);
+            });
+
+            elements.searchArtistsList.appendChild(artistElement);
+        });
+    }
 
 });
 
