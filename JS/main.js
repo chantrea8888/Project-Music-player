@@ -478,6 +478,56 @@ document.addEventListener('DOMContentLoaded', function () {
             elements.searchAlbumsResults.classList.add('d-none');
         }
     }
+    //Display song search results
+    function displaySongSearchResults() {
+        elements.searchSongsList.innerHTML = '';
+
+        state.searchResults.songs.forEach(song => {
+            const songElement = document.createElement('div');
+            songElement.className = 'playlist-item song-item';
+            songElement.innerHTML = `
+                        <img src="${song.albumArt}" alt="${song.title}">
+                        <div class="playlist-info">
+                            <h6>${song.title}</h6>
+                            <p>${song.artist} • ${song.album || 'Unknown Album'}</p>
+                        </div>
+                        <div class="song-duration">${song.duration}</div>
+                        <div class="action-buttons ms-2">
+                            <button class="btn btn-sm btn-outline-secondary play-search-song-btn" data-id="${song.id}" title="Play">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-custom add-search-song-btn" data-id="${song.id}" title="Add to Playlist">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    `;
+
+            // Add event listeners
+            const playBtn = songElement.querySelector('.play-search-song-btn');
+            playBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                playSongById(song.id);
+            });
+
+            const addBtn = songElement.querySelector('.add-search-song-btn');
+            addBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                addSongToCurrentPlaylist(song.id);
+            });
+
+            // Click on song item to play
+            songElement.addEventListener('click', function (e) {
+                if (!e.target.classList.contains('play-search-song-btn') &&
+                    !e.target.closest('.play-search-song-btn') &&
+                    !e.target.classList.contains('add-search-song-btn') &&
+                    !e.target.closest('.add-search-song-btn')) {
+                    playSongById(song.id);
+                }
+            });
+
+            elements.searchSongsList.appendChild(songElement);
+        });
+    }
 
 });
 
