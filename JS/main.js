@@ -416,6 +416,68 @@ document.addEventListener('DOMContentLoaded', function () {
         updateQuickSearchResults();
     }
 
+    //Display search results in the search section
+    function displaySearchResults() {
+        const totalResults =
+            state.searchResults.songs.length +
+            state.searchResults.artists.length +
+            state.searchResults.playlists.length +
+            state.searchResults.albums.length;
+
+        // Update result counts
+        elements.songsResultsCount.textContent = state.searchResults.songs.length;
+        elements.artistsResultsCount.textContent = state.searchResults.artists.length;
+        elements.playlistsResultsCount.textContent = state.searchResults.playlists.length;
+        elements.albumsResultsCount.textContent = state.searchResults.albums.length;
+
+        // Show/hide appropriate sections
+        if (totalResults === 0 && state.searchQuery.length > 0) {
+            elements.searchInitialState.classList.add('d-none');
+            elements.searchNoResults.classList.remove('d-none');
+
+            elements.searchSongsResults.classList.add('d-none');
+            elements.searchArtistsResults.classList.add('d-none');
+            elements.searchPlaylistsResults.classList.add('d-none');
+            elements.searchAlbumsResults.classList.add('d-none');
+
+            return;
+        }
+
+        elements.searchInitialState.classList.add('d-none');
+        elements.searchNoResults.classList.add('d-none');
+
+        // Display song results
+        if (state.searchResults.songs.length > 0 && (state.searchFilter === 'all' || state.searchFilter === 'songs')) {
+            elements.searchSongsResults.classList.remove('d-none');
+            displaySongSearchResults();
+        } else {
+            elements.searchSongsResults.classList.add('d-none');
+        }
+
+        // Display artist results
+        if (state.searchResults.artists.length > 0 && (state.searchFilter === 'all' || state.searchFilter === 'artists')) {
+            elements.searchArtistsResults.classList.remove('d-none');
+            displayArtistSearchResults();
+        } else {
+            elements.searchArtistsResults.classList.add('d-none');
+        }
+
+        // Display playlist results
+        if (state.searchResults.playlists.length > 0 && (state.searchFilter === 'all' || state.searchFilter === 'playlists')) {
+            elements.searchPlaylistsResults.classList.remove('d-none');
+            displayPlaylistSearchResults();
+        } else {
+            elements.searchPlaylistsResults.classList.add('d-none');
+        }
+
+        // Display album results
+        if (state.searchResults.albums.length > 0 && (state.searchFilter === 'all' || state.searchFilter === 'albums')) {
+            elements.searchAlbumsResults.classList.remove('d-none');
+            displayAlbumSearchResults();
+        } else {
+            elements.searchAlbumsResults.classList.add('d-none');
+        }
+    }
 
 });
 
