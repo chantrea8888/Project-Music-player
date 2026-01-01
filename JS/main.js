@@ -648,6 +648,74 @@ document.addEventListener('DOMContentLoaded', function () {
             elements.searchAlbumsList.appendChild(albumElement);
         });
     }
+    //Update quick search results dropdown
+    function updateQuickSearchResults() {
+        const totalResults =
+            state.searchResults.songs.length +
+            state.searchResults.artists.length +
+            state.searchResults.playlists.length +
+            state.searchResults.albums.length;
+
+        if (totalResults === 0 || !state.searchQuery) {
+            elements.searchResults.style.display = 'none';
+            return;
+        }
+
+        elements.searchResultsCount.textContent = `${totalResults} result${totalResults !== 1 ? 's' : ''}`;
+        elements.searchResultsList.innerHTML = '';
+
+        // Add top 3 songs
+        state.searchResults.songs.slice(0, 3).forEach(song => {
+            const resultItem = document.createElement('div');
+            resultItem.className = 'search-result-item';
+            resultItem.innerHTML = `
+                        <div class="search-result-icon">
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <div class="search-result-content">
+                            <div class="search-result-title">${song.title}</div>
+                            <div class="search-result-subtitle">${song.artist} • ${song.album || 'Unknown Album'}</div>
+                        </div>
+                        <div class="search-result-type">Song</div>
+                    `;
+
+            resultItem.addEventListener('click', function () {
+                playSongById(song.id);
+                elements.searchResults.style.display = 'none';
+                elements.globalSearchInput.value = '';
+                state.searchQuery = '';
+            });
+
+            elements.searchResultsList.appendChild(resultItem);
+        });
+
+        // Add top 2 artists
+        state.searchResults.artists.slice(0, 2).forEach(artist => {
+            const resultItem = document.createElement('div');
+            resultItem.className = 'search-result-item';
+            resultItem.innerHTML = `
+                        <div class="search-result-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="search-result-content">
+                            <div class="search-result-title">${artist}</div>
+                            <div class="search-result-subtitle">Artist</div>
+                        </div>
+                        <div class="search-result-type">Artist</div>
+                    `;
+
+            resultItem.addEventListener('click', function () {
+                playArtist(artist);
+                showSection('search');
+                elements.searchResults.style.display = 'none';
+            });
+
+            elements.searchResultsList.appendChild(resultItem);
+        });
+
+        // Show results dropdown
+        elements.searchResults.style.display = 'block';
+    }
 
 });
 
