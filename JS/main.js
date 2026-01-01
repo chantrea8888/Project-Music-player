@@ -717,5 +717,29 @@ document.addEventListener('DOMContentLoaded', function () {
         elements.searchResults.style.display = 'block';
     }
 
+    // Purpose: Clear search results
+    function clearSearchResults() {
+        state.searchQuery = '';
+        state.searchResults = {
+            songs: [],
+            artists: [],
+            playlists: [],
+            albums: []
+        };
+
+        elements.globalSearchInput.value = '';
+        elements.searchResults.style.display = 'none';
+        elements.searchClearBtn.style.display = 'none';
+
+        // Reset search section display
+        if (elements.searchSection.classList.contains('d-none') === false) {
+            elements.searchInitialState.classList.remove('d-none');
+            elements.searchNoResults.classList.add('d-none');
+            elements.searchSongsResults.classList.add('d-none');
+            elements.searchArtistsResults.classList.add('d-none');
+            elements.searchPlaylistsResults.classList.add('d-none');
+            elements.searchAlbumsResults.classList.add('d-none');
+        }
+    }
 });
 
