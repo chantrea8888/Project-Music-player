@@ -608,6 +608,46 @@ document.addEventListener('DOMContentLoaded', function () {
             elements.searchPlaylistsList.appendChild(playlistElement);
         });
     }
+    //Display album search results
+    function displayAlbumSearchResults() {
+        elements.searchAlbumsList.innerHTML = '';
+
+        state.searchResults.albums.forEach(album => {
+            const albumElement = document.createElement('div');
+            albumElement.className = 'col-md-4 mb-3';
+            albumElement.innerHTML = `
+                        <div class="card h-100 playlist-card">
+                            <img src="${album.albumArt}" class="card-img-top" alt="${album.name}" style="height: 150px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">${album.name}</h5>
+                                <p class="card-text text-muted">${album.artist}</p>
+                                <p class="card-text"><small class="text-muted">${album.songCount} song${album.songCount !== 1 ? 's' : ''}</small></p>
+                                <div class="d-flex justify-content-between playlist-actions">
+                                    <button class="btn btn-sm btn-custom play-album-btn" data-album="${album.name}" title="Play Album">
+                                        <i class="fas fa-play me-1"></i> Play
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-custom view-album-btn" data-album="${album.name}" title="View Album">
+                                        <i class="fas fa-eye me-1"></i> View
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+            // Add event listeners
+            const playBtn = albumElement.querySelector('.play-album-btn');
+            playBtn.addEventListener('click', function () {
+                playAlbum(album.name);
+            });
+
+            const viewBtn = albumElement.querySelector('.view-album-btn');
+            viewBtn.addEventListener('click', function () {
+                viewAlbum(album.name);
+            });
+
+            elements.searchAlbumsList.appendChild(albumElement);
+        });
+    }
 
 });
 
