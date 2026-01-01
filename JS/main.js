@@ -315,5 +315,107 @@ document.addEventListener('DOMContentLoaded', function () {
         elements.uploadedSongsCount.textContent = `${uploadedSongs.length} songs`;
     }
 
+    //Perform search across all music data
+    function performSearch(query, filter = 'all') {
+        if (!query || query.trim() === '') {
+            clearSearchResults();
+            return;
+        }
+
+        state.searchQuery = query.trim();
+        state.searchFilter = filter;
+
+        // Reset search results
+        state.searchResults = {
+            songs: [],
+            artists: [],
+            playlists: [],
+            albums: []
+        };
+
+        // Get all songs to search (including uploaded if enabled)
+        let songsToSearch = sampleSongs;
+        if (state.searchSettings.includeUploads) {
+            const uploadedSongs = getUploadedSongsFromLocalStorage();
+            songsToSearch = [...sampleSongs, ...uploadedSongs];
+        }
+
+        // Prepare search term (case handling)
+        const searchTerm = state.searchSettings.caseSensitive ?
+            state.searchQuery : state.searchQuery.toLowerCase();
+
+        // Search songs
+        if (filter === 'all' || filter === 'songs') {
+            state.searchResults.songs = songsToSearch.filter(song => {
+                const title = state.searchSettings.caseSensitive ?
+                    song.title : song.title.toLowerCase();
+                const artist = state.searchSettings.caseSensitive ?
+                    song.artist : song.artist.toLowerCase();
+                const album = song.album ? (state.searchSettings.caseSensitive ?
+                    song.album : song.album.toLowerCase()) : '';
+
+                return title.includes(searchTerm) ||
+                    artist.includes(searchTerm) ||
+                    (album && album.includes(searchTerm));
+            }).slice(0, state.searchSettings.resultsLimit);
+        }
+
+        // Search artists
+        if (filter === 'all' || filter === 'artists') {
+            const uniqueArtists = [...new Set(songsToSearch.map(song => song.artist))];
+            state.searchResults.artists = uniqueArtists.filter(artist => {
+                const artistName = state.searchSettings.caseSensitive ?
+                    artist : artist.toLowerCase();
+                return artistName.includes(searchTerm);
+            }).slice(0, state.searchSettings.resultsLimit);
+        }
+
+        // Search playlists
+        if (filter === 'all' || filter === 'playlists') {
+            state.searchResults.playlists = state.playlists.filter(playlist => {
+                const name = state.searchSettings.caseSensitive ?
+                    playlist.name : playlist.name.toLowerCase();
+                const desc = playlist.description ? (state.searchSettings.caseSensitive ?
+                    playlist.description : playlist.description.toLowerCase()) : '';
+
+                return name.includes(searchTerm) ||
+                    (desc && desc.includes(searchTerm));
+            }).slice(0, state.searchSettings.resultsLimit);
+        }
+
+        // Search albums
+        if (filter === 'all' || filter === 'albums') {
+            const albumsMap = {};
+            songsToSearch.forEach(song => {
+                if (song.album && !albumsMap[song.album]) {
+                    albumsMap[song.album] = {
+                        name: song.album,
+                        artist: song.artist,
+                        songCount: 1,
+                        albumArt: song.albumArt
+                    };
+                } else if (song.album) {
+                    albumsMap[song.album].songCount++;
+                }
+            });
+
+            const albums = Object.values(albumsMap);
+            state.searchResults.albums = albums.filter(album => {
+                const albumName = state.searchSettings.caseSensitive ?
+                    album.name : album.name.toLowerCase();
+                const albumArtist = state.searchSettings.caseSensitive ?
+                    album.artist : album.artist.toLowerCase();
+
+                return albumName.includes(searchTerm) ||
+                    albumArtist.includes(searchTerm);
+            }).slice(0, state.searchSettings.resultsLimit);
+        }
+
+        // Display results
+        displaySearchResults();
+        updateQuickSearchResults();
+    }
+
+
 });
 
