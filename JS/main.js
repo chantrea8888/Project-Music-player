@@ -790,5 +790,26 @@ function addSongToCurrentPlaylist(songId) {
         }
     }
 }
+// Play all songs by an artist
+function playArtist(artistName) {
+    const artistSongs = getAllSongs().filter(song => song.artist === artistName);
 
+    if (artistSongs.length > 0) {
+        state.currentPlaylist = artistSongs;
+        state.currentSongIndex = 0;
+
+        if (state.audioElement) {
+            state.audioElement.pause();
+        }
+
+        initAudioElement();
+        state.audioElement.play().catch(e => {
+            console.error("Error playing audio:", e);
+        });
+
+        showSection('library');
+        Notify.success(`Now playing: ${artistName}`);
+        updateStatus(`Playing artist: ${artistName}`, "ok");
+    }
+}
 
