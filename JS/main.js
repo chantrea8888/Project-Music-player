@@ -1021,7 +1021,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 100);
     }
 
-    
+
     //Delete a playlist
     function deletePlaylist(playlistId) {
         const playlist = state.playlists.find(p => p.id === playlistId);
@@ -1049,6 +1049,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         });
+    }
+
+    // Get all songs (sample + uploaded)
+    function getAllSongs() {
+        const uploadedSongs = getUploadedSongsFromLocalStorage();
+        return [...sampleSongs, ...uploadedSongs];
     }
 });
 
