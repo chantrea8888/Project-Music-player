@@ -2077,6 +2077,28 @@ document.addEventListener('DOMContentLoaded', function () {
                 elements.globalSearchInput.focus();
             }, 100);
         });
+        // Sidebar search (mobile)
+        elements.sidebarSearchBtn.addEventListener('click', function () {
+            const query = elements.sidebarSearch.value.trim();
+            if (query) {
+                state.searchQuery = query;
+                elements.globalSearchInput.value = query;
+                showSection('search');
+                performSearch(query, state.searchFilter);
+            }
+        });
+
+        elements.sidebarSearch.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                const query = this.value.trim();
+                if (query) {
+                    state.searchQuery = query;
+                    elements.globalSearchInput.value = query;
+                    showSection('search');
+                    performSearch(query, state.searchFilter);
+                }
+            }
+        });
 
     }
 
