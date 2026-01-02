@@ -2070,6 +2070,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 elements.searchResults.style.display = 'none';
             }
         });
+        // Quick search button
+        elements.quickSearchBtn.addEventListener('click', function () {
+            showSection('search');
+            setTimeout(() => {
+                elements.globalSearchInput.focus();
+            }, 100);
+        });
 
     }
 
