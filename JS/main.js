@@ -1221,6 +1221,69 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Update Playing List
+    function updateNowPlayingList() {
+        elements.nowPlayingList.innerHTML = '';
+
+        if (state.currentPlaylist.length === 0) {
+            elements.nowPlayingList.innerHTML = `
+                        <div class="text-center py-5">
+                            <i class="fas fa-music fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No songs in playlist</h5>
+                            <p class="text-muted">Add songs from search or upload section</p>
+                        </div>
+                    `;
+            return;
+        }
+
+        state.currentPlaylist.forEach((song, index) => {
+            const isActive = index === state.currentSongIndex;
+
+            const songElement = document.createElement('div');
+            songElement.className = `playlist-item song-item ${isActive ? 'active' : ''}`;
+            songElement.innerHTML = `
+                        <img src="${song.albumArt}" alt="${song.title}">
+                        <div class="playlist-info">
+                            <h6>${song.title}</h6>
+                            <p>${song.artist}</p>
+                        </div>
+                        <div class="song-duration">${song.duration}</div>
+                        <div class="action-buttons ms-2">
+                            <button class="btn btn-sm btn-outline-secondary play-song-btn" data-index="${index}" title="${isActive && state.isPlaying ? 'Pause' : 'Play'}">
+                                <i class="fas fa-${isActive && state.isPlaying ? 'pause' : 'play'}"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger remove-song-btn" data-index="${index}" title="Remove from Playlist">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+
+            songElement.addEventListener('click', function (e) {
+                if (!e.target.classList.contains('play-song-btn') &&
+                    !e.target.closest('.play-song-btn') &&
+                    !e.target.classList.contains('remove-song-btn') &&
+                    !e.target.closest('.remove-song-btn')) {
+                    playSong(index);
+                }
+            });
+
+            const playBtn = songElement.querySelector('.play-song-btn');
+            playBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                playSong(index);
+            });
+
+            const removeBtn = songElement.querySelector('.remove-song-btn');
+            removeBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                removeSongFromCurrentPlaylist(index);
+            });
+
+            elements.nowPlayingList.appendChild(songElement);
+        });
+
+        updateSearchStatistics();
+    }
 });
 
 
