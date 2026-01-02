@@ -1091,5 +1091,24 @@ document.addEventListener('DOMContentLoaded', function () {
         updateSongInfo();
         updateNowPlayingList();
     }
+
+    // Play a specific song by index
+    function playSong(index) {
+        if (index < 0 || index >= state.currentPlaylist.length) return;
+
+        state.currentSongIndex = index;
+
+        if (state.audioElement) {
+            state.audioElement.pause();
+        }
+
+        initAudioElement();
+        state.audioElement.play().catch(e => {
+            console.error("Error playing audio:", e);
+            Notify.error("Could not play audio. Please try another song.");
+        });
+
+        saveToLocalStorage();
+    }
 });
 
