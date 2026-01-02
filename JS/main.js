@@ -2162,6 +2162,57 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
+        // File upload
+        elements.browseFilesBtn.addEventListener('click', function () {
+            elements.fileInput.click();
+        });
+
+        elements.fileInput.addEventListener('change', function () {
+            if (this.files.length > 0) {
+                // Show uploading status
+                const originalText = elements.uploadArea.innerHTML;
+                elements.uploadArea.innerHTML = `
+                            <div class="loading-spinner mb-3"></div>
+                            <h5>Uploading ${this.files.length} file(s)...</h5>
+                            <p class="text-muted">Please wait</p>
+                        `;
+
+                setTimeout(() => {
+                    handleFileUpload(this.files);
+                    this.value = '';
+
+                    // Restore original content
+                    elements.uploadArea.innerHTML = originalText;
+                    // Re-attach event listeners
+                    elements.browseFilesBtn.addEventListener('click', function () {
+                        elements.fileInput.click();
+                    });
+                }, 500);
+            }
+        });
+
+        // Drag and drop for upload
+        elements.uploadArea.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            this.style.borderColor = 'var(--primary-color)';
+            this.style.backgroundColor = 'rgba(67, 97, 238, 0.05)';
+        });
+
+        elements.uploadArea.addEventListener('dragleave', function () {
+            this.style.borderColor = '#ccc';
+            this.style.backgroundColor = '';
+        });
+
+        elements.uploadArea.addEventListener('drop', function (e) {
+            e.preventDefault();
+            this.style.borderColor = '#ccc';
+            this.style.backgroundColor = '';
+
+            if (e.dataTransfer.files.length > 0) {
+                handleFileUpload(e.dataTransfer.files);
+            }
+        });
+
     }
 
 });
