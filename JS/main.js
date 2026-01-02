@@ -2530,6 +2530,48 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     };
+    // ============================================
+    // APPLICATION INITIALIZATION
+    // ============================================
+
+    function initApp() {
+        loadFromLocalStorage();
+        initEventListeners();
+        updateNowPlayingList();
+        updatePlaylistsDisplay();
+        updateUploadedSongs();
+        initializeAllSongs();
+
+        // Show initial section
+        showSection('library');
+
+        // Set canvas dimensions
+        if (elements.visualizerCanvas) {
+            elements.visualizerCanvas.width = elements.visualizerCanvas.parentElement.clientWidth;
+            elements.visualizerCanvas.height = elements.visualizerCanvas.parentElement.clientHeight;
+        }
+
+        // Show welcome tutorial (first time only)
+        setTimeout(() => {
+            showQuickTutorial();
+        }, 1000);
+
+        updateStatus("HarmonyStream ready! Search your music library.", "ok");
+
+        // Auto-play first song after a moment
+        setTimeout(() => {
+            if (state.currentPlaylist.length > 0 && !state.isPlaying) {
+                // Show play hint
+                elements.playPauseBtn.classList.add('tutorial-highlight');
+                setTimeout(() => {
+                    elements.playPauseBtn.classList.remove('tutorial-highlight');
+                }, 3000);
+            }
+        }, 2000);
+    }
+
+    // Start the application
+    initApp();
 
 
 });
