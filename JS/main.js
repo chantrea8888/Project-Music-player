@@ -770,3 +770,25 @@ function playSongById(songId) {
         }
     }
 }
+//Add song to current playlist by ID
+function addSongToCurrentPlaylist(songId) {
+    const allSongs = getAllSongs();
+    const song = allSongs.find(song => song.id === songId);
+
+    if (song) {
+        // Check if song is already in playlist
+        const isAlreadyInPlaylist = state.currentPlaylist.some(s => s.id === songId);
+
+        if (!isAlreadyInPlaylist) {
+            state.currentPlaylist.push(song);
+            updateNowPlayingList();
+            updateSearchStatistics();
+            Notify.success(`"${song.title}" added to current playlist`);
+            updateStatus(`Added to playlist: ${song.title}`, "ok");
+        } else {
+            Notify.info(`"${song.title}" is already in the playlist`);
+        }
+    }
+}
+
+
