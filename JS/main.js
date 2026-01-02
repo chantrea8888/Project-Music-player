@@ -1110,5 +1110,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
         saveToLocalStorage();
     }
+
+    // function play next song
+    function playNextSong() {
+        if (state.isLooping) {
+            state.audioElement.currentTime = 0;
+            state.audioElement.play();
+            return;
+        }
+
+        let nextIndex;
+        if (state.isShuffled) {
+            do {
+                nextIndex = Math.floor(Math.random() * state.currentPlaylist.length);
+            } while (nextIndex === state.currentSongIndex && state.currentPlaylist.length > 1);
+        } else {
+            nextIndex = (state.currentSongIndex + 1) % state.currentPlaylist.length;
+        }
+
+        playSong(nextIndex);
+    }
 });
 
