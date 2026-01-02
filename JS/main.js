@@ -1141,5 +1141,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
         playSong(prevIndex);
     }
+    // function play a playlist
+    function playPlaylist(playlistId) {
+        const playlist = state.playlists.find(p => p.id === playlistId);
+        if (!playlist) return;
+
+        const playlistSongs = [];
+        playlist.songs.forEach(songId => {
+            const song = getAllSongs().find(s => s.id === songId);
+            if (song) playlistSongs.push(song);
+        });
+
+        if (playlistSongs.length === 0) {
+            Notify.warning("This playlist is empty. Add some songs first.");
+            return;
+        }
+
+        state.currentPlaylist = playlistSongs;
+        state.currentSongIndex = 0;
+
+        if (state.audioElement) {
+            state.audioElement.pause();
+        }
+
+        initAudioElement();
+        state.audioElement.play().catch(e => {
+            console.error("Error playing audio:", e);
+        });
+
+        showSection('library');
+        Notify.success(`Now playing: ${playlist.name}`);
+    }
+
 });
 
