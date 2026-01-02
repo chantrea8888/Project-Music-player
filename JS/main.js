@@ -1844,6 +1844,38 @@ document.addEventListener('DOMContentLoaded', function () {
             elements.statusIndicator.classList.add('d-none');
         }, 5000);
     }
+
+    function showQuickTutorial() {
+        // Check if tutorial has been shown before
+        if (localStorage.getItem('harmonystream_tutorial_shown')) return;
+
+        Swal.fire({
+            title: 'Welcome to Music Player!',
+            html: `
+                <div class="text-start">
+                    <p><strong>Quick Guide:</strong></p>
+                    <ul>
+                        <li>🎵 <strong>Play/Pause:</strong> Click the big play button or press Space</li>
+                        <li>🔍 <strong>Search:</strong> Type in the search bar to find music</li>
+                        <li>📁 <strong>Create Playlists:</strong> Go to "Playlists" section</li>
+                        <li>⬆️ <strong>Upload Music:</strong> Drag & drop or click to upload</li>
+                        <li>🎛️ <strong>Controls:</strong> Use shuffle, loop, and volume controls</li>
+                    </ul>
+                    <p class="text-muted">You can always access help by pressing <kbd>?</kbd></p>
+                </div>
+            `,
+            icon: 'info',
+            confirmButtonText: 'Got it!',
+            showCancelButton: true,
+            cancelButtonText: 'Show me around'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.setItem('harmonystream_tutorial_shown', 'true');
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                startInteractiveTutorial();
+            }
+        });
+    }
 });
 
 
