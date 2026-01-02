@@ -1900,6 +1900,40 @@ document.addEventListener('DOMContentLoaded', function () {
                 position: 'top'
             }
         ];
+        let currentStep = 0;
+
+        function showStep() {
+            if (currentStep >= steps.length) {
+                localStorage.setItem('harmonystream_tutorial_shown', 'true');
+                return;
+            }
+
+            const step = steps[currentStep];
+
+            // Highlight the element
+            step.element.classList.add('tutorial-highlight');
+
+            Swal.fire({
+                title: `Step ${currentStep + 1} of ${steps.length}`,
+                text: step.message,
+                icon: 'info',
+                confirmButtonText: currentStep === steps.length - 1 ? 'Finish' : 'Next',
+                showCancelButton: true,
+                cancelButtonText: 'Skip Tutorial'
+            }).then((result) => {
+                // Remove highlight
+                step.element.classList.remove('tutorial-highlight');
+
+                if (result.isConfirmed) {
+                    currentStep++;
+                    showStep();
+                } else {
+                    localStorage.setItem('harmonystream_tutorial_shown', 'true');
+                }
+            });
+        }
+
+        showStep();
     }
 });
 
