@@ -2338,6 +2338,59 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
+        // Search settings
+        document.getElementById('search-include-uploads').addEventListener('change', function () {
+            state.searchSettings.includeUploads = this.checked;
+            saveToLocalStorage();
+            Notify.info(`Uploaded songs ${this.checked ? 'included' : 'excluded'} from search`);
+
+            if (state.searchQuery && state.searchQuery.length > 0) {
+                performSearch(state.searchQuery, state.searchFilter);
+            }
+        });
+
+        document.getElementById('search-case-sensitive').addEventListener('change', function () {
+            state.searchSettings.caseSensitive = this.checked;
+            saveToLocalStorage();
+            Notify.info(`Case-sensitive search ${this.checked ? 'enabled' : 'disabled'}`);
+
+            if (state.searchQuery && state.searchQuery.length > 0) {
+                performSearch(state.searchQuery, state.searchFilter);
+            }
+        });
+
+        document.getElementById('search-results-limit').addEventListener('input', function () {
+            state.searchSettings.resultsLimit = parseInt(this.value);
+            document.getElementById('search-results-limit-value').textContent = `${this.value} results per category`;
+            saveToLocalStorage();
+
+            if (state.searchQuery && state.searchQuery.length > 0) {
+                performSearch(state.searchQuery, state.searchFilter);
+            }
+        });
+
+        // Other settings
+        document.getElementById('crossfade').addEventListener('input', function () {
+            document.getElementById('crossfade-display-value').textContent = `${this.value} seconds`;
+            saveToLocalStorage();
+        });
+
+        document.getElementById('audio-quality').addEventListener('change', function () {
+            Notify.info(`Audio quality set to: ${this.options[this.selectedIndex].text}`);
+            saveToLocalStorage();
+        });
+
+        document.getElementById('auto-play').addEventListener('change', function () {
+            Notify.info(`Auto-play ${this.checked ? 'enabled' : 'disabled'}`);
+            saveToLocalStorage();
+        });
+
+        document.getElementById('save-playback').addEventListener('change', function () {
+            Notify.info(`Playback saving ${this.checked ? 'enabled' : 'disabled'}`);
+            saveToLocalStorage();
+        });
+
+
     }
 
 
