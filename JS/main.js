@@ -1020,5 +1020,34 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }, 100);
     }
+
+    //Delete a playlist
+    function deletePlaylist(playlistId) {
+        const playlist = state.playlists.find(p => p.id === playlistId);
+        if (!playlist) return;
+
+        Swal.fire({
+            title: 'Delete Playlist?',
+            text: `Are you sure you want to delete "${playlist.name}"? This action cannot be undone.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const index = state.playlists.findIndex(p => p.id === playlistId);
+                if (index !== -1) {
+                    state.playlists.splice(index, 1);
+                    saveToLocalStorage();
+                    updatePlaylistsDisplay();
+                    updateSidebarPlaylists();
+                    updateSearchStatistics();
+                    Notify.success('Playlist deleted successfully');
+                    updateStatus(`Deleted playlist: ${playlist.name}`, "ok");
+                }
+            }
+        });
+    }
 });
 
