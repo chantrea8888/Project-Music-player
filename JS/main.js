@@ -1641,6 +1641,54 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    function addUploadedSongToPlaylist(song) {
+        if (state.playlists.length === 0) {
+            Swal.fire({
+                title: 'No Playlists',
+                text: 'You need to create a playlist first. Would you like to create one now?',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: 'Create Playlist',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    createNewPlaylist();
+                }
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: 'Add to Playlist',
+            text: `Add "${song.title}" to which playlist?`,
+            input: 'select',
+            inputOptions: state.playlists.reduce((options, playlist) => {
+                options[playlist.id] = playlist.name;
+                return options;
+            }, {}),
+            showCancelButton: true,
+            confirmButtonText: 'Add',
+            preConfirm: (playlistId) => {
+                const playlist = state.playlists.find(p => p.id === parseInt(playlistId));
+                if (playlist && !playlist.songs.includes(song.id)) {
+                    playlist.songs.push(song.id);
+                    saveToLocalStorage();
+                    updatePlaylistsDisplay();
+                    updateSidebarPlaylists();
+                    return true;
+                } else if (playlist && playlist.songs.includes(song.id)) {
+                    Swal.showValidationMessage('This song is already in the playlist');
+                    return false;
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed && result.value) {
+                Notify.success('Song added to playlist');
+                updateStatus(`Added "${song.title}" to playlist`, "ok");
+            }
+        });
+    }
+
 });
 
 
