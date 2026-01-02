@@ -2063,6 +2063,14 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
+        // Close search results when clicking outside
+        document.addEventListener('click', function (event) {
+            if (!elements.globalSearchContainer.contains(event.target) &&
+                !elements.searchResults.contains(event.target)) {
+                elements.searchResults.style.display = 'none';
+            }
+        });
+
     }
 
 });
