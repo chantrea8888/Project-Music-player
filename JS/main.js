@@ -868,5 +868,43 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+    
+    //Show playlist details
+    function showPlaylistDetails(playlistId) {
+        const playlist = state.playlists.find(p => p.id === playlistId);
+        if (!playlist) return;
+
+        const playlistSongs = getAllSongs().filter(song => playlist.songs.includes(song.id));
+
+        Swal.fire({
+            title: playlist.name,
+            html: `
+                <div class="text-start">
+                    <p>${playlist.description}</p>
+                    <p><strong>Songs:</strong> ${playlistSongs.length}</p>
+                    <div class="mt-3">
+                        <h6>Tracklist:</h6>
+                        <ul class="list-group">
+                            ${playlistSongs.map(song => `
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    ${song.title} - ${song.artist}
+                                    <span class="badge bg-primary rounded-pill">${song.duration}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'Play Playlist',
+            cancelButtonText: 'Close',
+            confirmButtonColor: '#4361ee',
+            width: '600px'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                playPlaylist(playlistId);
+            }
+        });
+    }
 });
 
