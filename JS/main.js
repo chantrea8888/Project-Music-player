@@ -1703,6 +1703,67 @@ document.addEventListener('DOMContentLoaded', function () {
 
         localStorage.setItem('musicPlayerState', JSON.stringify(appState));
     }
+    
+    function loadFromLocalStorage() {
+        const savedState = localStorage.getItem('musicPlayerState');
+        if (savedState) {
+            const parsedState = JSON.parse(savedState);
+
+            state.currentSongIndex = parsedState.currentSongIndex || 0;
+            state.isPlaying = false;
+            state.isShuffled = parsedState.isShuffled || false;
+            state.isLooping = parsedState.isLooping || false;
+            state.volume = parsedState.volume || 80;
+            state.playlists = parsedState.playlists || samplePlaylists;
+            state.searchSettings = parsedState.searchSettings || state.searchSettings;
+
+            // Apply search settings to UI
+            document.getElementById('search-include-uploads').checked = state.searchSettings.includeUploads;
+            document.getElementById('search-case-sensitive').checked = state.searchSettings.caseSensitive;
+            document.getElementById('search-results-limit').value = state.searchSettings.resultsLimit;
+            document.getElementById('search-results-limit-value').textContent = `${state.searchSettings.resultsLimit} results per category`;
+
+            elements.volumeSlider.value = state.volume;
+            elements.shuffleBtn.classList.toggle('active', state.isShuffled);
+            elements.loopBtn.classList.toggle('active', state.isLooping);
+            elements.toggleShuffleBtn.classList.toggle('active', state.isShuffled);
+            elements.toggleLoopBtn.classList.toggle('active', state.isLooping);
+
+            if (parsedState.currentPlaylist) {
+                state.currentPlaylist = [];
+                parsedState.currentPlaylist.forEach(songId => {
+                    const sampleSong = sampleSongs.find(s => s.id === songId);
+                    if (sampleSong) {
+                        state.currentPlaylist.push(sampleSong);
+                    }
+
+                    const uploadedSongs = getUploadedSongsFromLocalStorage();
+                    const uploadedSong = uploadedSongs.find(s => s.id === songId);
+                    if (uploadedSong) {
+                        state.currentPlaylist.push(uploadedSong);
+                    }
+                });
+            }
+
+            if (state.currentPlaylist.length > 0) {
+                initAudioElement();
+                if (state.isPlaying) {
+                    state.audioElement.play().catch(e => {
+                        console.error("Error resuming playback:", e);
+                    });
+                }
+            } else {
+                state.currentPlaylist = [...sampleSongs];
+                initAudioElement();
+            }
+        } else {
+            state.currentPlaylist = [...sampleSongs];
+            state.playlists = [...samplePlaylists];
+            initAudioElement();
+        }
+
+        initializeAllSongs();
+    }
 
 });
 
