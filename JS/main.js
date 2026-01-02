@@ -1327,6 +1327,77 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     }
+
+    function updatePlaylistsDisplay() {
+        elements.playlistsContainer.innerHTML = '';
+
+        if (state.playlists.length === 0) {
+            elements.playlistsContainer.innerHTML = `
+                        <div class="col-12 text-center py-5">
+                            <i class="fas fa-list fa-3x text-muted mb-3"></i>
+                            <h4 class="text-muted">No Playlists Yet</h4>
+                            <p class="text-muted mb-4">Create your first playlist to organize your music</p>
+                            <button class="btn btn-custom" id="create-first-playlist-btn">
+                                <i class="fas fa-plus me-1"></i> Create Your First Playlist
+                            </button>
+                        </div>
+                    `;
+
+            document.getElementById('create-first-playlist-btn')?.addEventListener('click', function () {
+                createNewPlaylist();
+            });
+
+            return;
+        }
+
+        state.playlists.forEach(playlist => {
+            const playlistCard = document.createElement('div');
+            playlistCard.className = 'col-md-4 mb-4';
+            playlistCard.innerHTML = `
+                        <div class="card h-100 playlist-card">
+                            <img src="${playlist.image}" class="card-img-top" alt="${playlist.name}" style="height: 150px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">${playlist.name}</h5>
+                                <p class="card-text text-muted">${playlist.description}</p>
+                                <p class="card-text"><small class="text-muted">${playlist.songs.length} songs</small></p>
+                                <div class="d-flex justify-content-between playlist-actions">
+                                    <button class="btn btn-sm btn-custom play-playlist-btn" data-id="${playlist.id}" title="Play Playlist">
+                                        <i class="fas fa-play me-1"></i> Play
+                                    </button>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-custom edit-playlist-btn" data-id="${playlist.id}" title="Edit Playlist">
+                                            <i class="fas fa-edit me-1"></i> Edit
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger delete-playlist-btn ms-1" data-id="${playlist.id}" title="Delete Playlist">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+            // Add event listeners
+            const playBtn = playlistCard.querySelector('.play-playlist-btn');
+            playBtn.addEventListener('click', function () {
+                playPlaylist(playlist.id);
+            });
+
+            const editBtn = playlistCard.querySelector('.edit-playlist-btn');
+            editBtn.addEventListener('click', function () {
+                editPlaylist(playlist.id);
+            });
+
+            const deleteBtn = playlistCard.querySelector('.delete-playlist-btn');
+            deleteBtn.addEventListener('click', function () {
+                deletePlaylist(playlist.id);
+            });
+
+            elements.playlistsContainer.appendChild(playlistCard);
+        });
+
+        updateSidebarPlaylists();
+    }
 });
 
 
