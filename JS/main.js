@@ -868,7 +868,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-    
+
     //Show playlist details
     function showPlaylistDetails(playlistId) {
         const playlist = state.playlists.find(p => p.id === playlistId);
@@ -905,6 +905,120 @@ document.addEventListener('DOMContentLoaded', function () {
                 playPlaylist(playlistId);
             }
         });
+    }
+
+    //Edit a playlist
+    function editPlaylist(playlistId) {
+        const playlist = state.playlists.find(p => p.id === playlistId);
+        if (!playlist) return;
+
+        // Get all available songs
+        const allSongs = getAllSongs();
+        const currentPlaylistSongs = allSongs.filter(song => playlist.songs.includes(song.id));
+
+        Swal.fire({
+            title: 'Edit Playlist',
+            html: `
+                        <div class="text-start">
+                            <div class="mb-3">
+                                <label class="form-label">Playlist Name</label>
+                                <input type="text" id="edit-playlist-name" class="form-control" value="${playlist.name}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea id="edit-playlist-desc" class="form-control" rows="2">${playlist.description || ''}</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Songs in Playlist (${currentPlaylistSongs.length})</label>
+                                <div class="border rounded p-2" style="max-height: 200px; overflow-y: auto;">
+                                    ${currentPlaylistSongs.map(song => `
+                                        <div class="d-flex justify-content-between align-items-center mb-2 p-2 border-bottom">
+                                            <div>
+                                                <strong>${song.title}</strong>
+                                                <div class="text-muted small">${song.artist}</div>
+                                            </div>
+                                            <button type="button" class="btn btn-sm btn-outline-danger remove-song-from-edit" data-id="${song.id}">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    `).join('')}
+                                    ${currentPlaylistSongs.length === 0 ? '<p class="text-muted text-center">No songs in playlist</p>' : ''}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Add Songs to Playlist</label>
+                                <select id="add-song-select" class="form-select" multiple style="height: 150px;">
+                                    ${allSongs.map(song => `
+                                        <option value="${song.id}" ${playlist.songs.includes(song.id) ? 'disabled' : ''}>
+                                            ${song.title} - ${song.artist}
+                                        </option>
+                                    `).join('')}
+                                </select>
+                                <div class="form-text">Hold Ctrl/Cmd to select multiple songs</div>
+                            </div>
+                        </div>
+                    `,
+            showCancelButton: true,
+            confirmButtonText: 'Save Changes',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#4361ee',
+            width: '600px',
+            preConfirm: () => {
+                const name = document.getElementById('edit-playlist-name').value;
+                const desc = document.getElementById('edit-playlist-desc').value;
+
+                if (!name.trim()) {
+                    Swal.showValidationMessage('Please enter a playlist name');
+                    return false;
+                }
+
+                return { name, desc };
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Update playlist name and description
+                playlist.name = result.value.name;
+                playlist.description = result.value.desc;
+
+                // Handle song removals (songs removed via the remove buttons during the edit)
+                // Note: This would require additional logic to track removals
+
+                // Handle adding new songs
+                const addSongSelect = document.getElementById('add-song-select');
+                if (addSongSelect) {
+                    const selectedOptions = Array.from(addSongSelect.selectedOptions);
+                    selectedOptions.forEach(option => {
+                        const songId = parseInt(option.value);
+                        if (!playlist.songs.includes(songId)) {
+                            playlist.songs.push(songId);
+                        }
+                    });
+                }
+
+                saveToLocalStorage();
+                updatePlaylistsDisplay();
+                updateSidebarPlaylists();
+                Notify.success('Playlist updated successfully');
+                updateStatus(`Updated playlist: ${playlist.name}`, "ok");
+            }
+        });
+
+        // Add event listeners for removing songs during edit
+        setTimeout(() => {
+            document.querySelectorAll('.remove-song-from-edit').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const songId = parseInt(this.getAttribute('data-id'));
+                    const index = playlist.songs.indexOf(songId);
+                    if (index !== -1) {
+                        playlist.songs.splice(index, 1);
+
+                        // Update the UI immediately
+                        this.closest('.d-flex').remove();
+                        Notify.info('Song removed from playlist');
+                    }
+                });
+            });
+        }, 100);
     }
 });
 
