@@ -2480,6 +2480,56 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     }
+    // ============================================
+    // NOTIFICATION SYSTEM
+    // ============================================
+
+    window.Notify = {
+        success: function (message) {
+            Swal.fire({
+                toast: true,
+                position: 'top-right',
+                icon: 'success',
+                title: message,
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+        },
+        error: function (message) {
+            Swal.fire({
+                toast: true,
+                position: 'top-right',
+                icon: 'error',
+                title: message,
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+        },
+        warning: function (message) {
+            Swal.fire({
+                toast: true,
+                position: 'top-right',
+                icon: 'warning',
+                title: message,
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+        },
+        info: function (message) {
+            Swal.fire({
+                toast: true,
+                position: 'top-right',
+                icon: 'info',
+                title: message,
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+        }
+    };
 
 
 });
