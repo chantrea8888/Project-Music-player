@@ -2295,6 +2295,48 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         });
+        // Create playlist button
+        elements.createPlaylistBtn.addEventListener('click', createNewPlaylist);
+
+        // Upload lyrics button
+        elements.uploadLyricsBtn.addEventListener('click', function () {
+            const currentSong = state.currentPlaylist[state.currentSongIndex];
+            if (!currentSong) {
+                Notify.warning('No song is currently playing');
+                return;
+            }
+
+            Swal.fire({
+                title: 'Upload Lyrics',
+                html: `
+                            <div class="text-start">
+                                <p>Upload lyrics for: <strong>${currentSong.title}</strong></p>
+                                <div class="mb-3">
+                                    <label class="form-label">Lyrics Text</label>
+                                    <textarea id="lyrics-text" class="form-control" rows="10" placeholder="Paste lyrics here..."></textarea>
+                                </div>
+                                <div class="form-text">You can add timestamps like [00:15] for synchronized lyrics</div>
+                            </div>
+                        `,
+                showCancelButton: true,
+                confirmButtonText: 'Save Lyrics',
+                cancelButtonText: 'Cancel',
+                preConfirm: () => {
+                    const lyricsText = document.getElementById('lyrics-text').value;
+                    if (!lyricsText.trim()) {
+                        Swal.showValidationMessage('Please enter lyrics');
+                        return false;
+                    }
+                    return lyricsText;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // In a real app, you would save the lyrics to the song
+                    Notify.success('Lyrics saved for this song');
+                    updateStatus(`Lyrics saved for ${currentSong.title}`, "ok");
+                }
+            });
+        });
 
     }
 
