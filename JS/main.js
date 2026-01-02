@@ -2161,8 +2161,40 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
         });
+        // Navigation
+        elements.navLibrary.addEventListener('click', function (e) {
+            e.preventDefault();
+            showSection('library');
+        });
+
+        elements.navPlaylists.addEventListener('click', function (e) {
+            e.preventDefault();
+            showSection('playlists');
+        });
+
+        elements.navUpload.addEventListener('click', function (e) {
+            e.preventDefault();
+            showSection('upload');
+        });
+
+        elements.navLyrics.addEventListener('click', function (e) {
+            e.preventDefault();
+            showSection('lyrics');
+        });
+
+        elements.navSearch.addEventListener('click', function (e) {
+            e.preventDefault();
+            showSection('search');
+        });
+
+        elements.navSettings.addEventListener('click', function (e) {
+            e.preventDefault();
+            showSection('settings');
+        });
+
 
     }
+
 
 });
 
