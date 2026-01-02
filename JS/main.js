@@ -1421,6 +1421,72 @@ document.addEventListener('DOMContentLoaded', function () {
             elements.sidebarPlaylists.appendChild(playlistItem);
         });
     }
+
+    // Create a new playlist
+    function createNewPlaylist() {
+        Swal.fire({
+            title: 'Create New Playlist',
+            html: `
+                        <div class="text-start">
+                            <div class="mb-3">
+                                <label class="form-label">Playlist Name</label>
+                                <input type="text" id="new-playlist-name" class="form-control" placeholder="My Awesome Playlist">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description (Optional)</label>
+                                <textarea id="new-playlist-desc" class="form-control" rows="2" placeholder="Describe your playlist..."></textarea>
+                            </div>
+                        </div>
+                    `,
+            showCancelButton: true,
+            confirmButtonText: 'Create Playlist',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#4361ee',
+            preConfirm: () => {
+                const name = document.getElementById('new-playlist-name').value;
+                const desc = document.getElementById('new-playlist-desc').value;
+
+                if (!name.trim()) {
+                    Swal.showValidationMessage('Please enter a playlist name');
+                    return false;
+                }
+
+                return { name, desc };
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const newPlaylist = {
+                    id: Date.now(),
+                    name: result.value.name,
+                    description: result.value.desc,
+                    songs: [],
+                    image: "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                };
+
+                state.playlists.push(newPlaylist);
+                saveToLocalStorage();
+                updatePlaylistsDisplay();
+                updateSidebarPlaylists();
+                updateSearchStatistics();
+                Notify.success('Playlist created successfully');
+                updateStatus(`Created playlist: ${newPlaylist.name}`, "ok");
+
+                // Ask if they want to add songs now
+                Swal.fire({
+                    title: 'Add Songs?',
+                    text: 'Would you like to add songs to your new playlist now?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, add songs',
+                    cancelButtonText: 'Later'
+                }).then((addResult) => {
+                    if (addResult.isConfirmed) {
+                        editPlaylist(newPlaylist.id);
+                    }
+                });
+            }
+        });
+    }
 });
 
 
