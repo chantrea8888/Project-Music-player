@@ -1935,6 +1935,98 @@ document.addEventListener('DOMContentLoaded', function () {
 
         showStep();
     }
+
+    // ============================================
+    // EVENT LISTENERS SETUP - FIXED WITH ENHANCEMENTS
+    // ============================================
+
+    function initEventListeners() {
+        // Play/Pause button
+        elements.playPauseBtn.addEventListener('click', function () {
+            if (!state.audioElement) return;
+
+            if (state.isPlaying) {
+                state.audioElement.pause();
+            } else {
+                state.audioElement.play().catch(e => {
+                    console.error("Error playing audio:", e);
+                });
+            }
+        });
+
+        // Previous button
+        elements.prevBtn.addEventListener('click', playPrevSong);
+
+        // Next button
+        elements.nextBtn.addEventListener('click', playNextSong);
+
+        // Shuffle button
+        function toggleShuffle() {
+            state.isShuffled = !state.isShuffled;
+            elements.shuffleBtn.classList.toggle('active', state.isShuffled);
+            elements.toggleShuffleBtn.classList.toggle('active', state.isShuffled);
+
+            Notify.info(state.isShuffled ? "Shuffle mode activated" : "Shuffle mode deactivated");
+            saveToLocalStorage();
+        }
+
+        elements.shuffleBtn.addEventListener('click', toggleShuffle);
+        elements.toggleShuffleBtn.addEventListener('click', toggleShuffle);
+
+        // Loop button
+        function toggleLoop() {
+            state.isLooping = !state.isLooping;
+            elements.loopBtn.classList.toggle('active', state.isLooping);
+            elements.toggleLoopBtn.classList.toggle('active', state.isLooping);
+
+            Notify.info(state.isLooping ? "Loop mode activated" : "Loop mode deactivated");
+            saveToLocalStorage();
+        }
+
+        elements.loopBtn.addEventListener('click', toggleLoop);
+        elements.toggleLoopBtn.addEventListener('click', toggleLoop);
+
+        // Volume slider
+        elements.volumeSlider.addEventListener('input', function () {
+            state.volume = this.value;
+            if (state.audioElement) {
+                state.audioElement.volume = state.volume / 100;
+            }
+            saveToLocalStorage();
+        });
+
+
+        // Progress bar click to seek
+        const progressContainer = document.querySelector('.progress-bar');
+        progressContainer.addEventListener('click', function (e) {
+            if (!state.audioElement) return;
+
+            const width = this.clientWidth;
+            const clickX = e.offsetX;
+            const duration = state.audioElement.duration;
+
+            if (duration) {
+                state.audioElement.currentTime = (clickX / width) * duration;
+            }
+        });
+
+        // Crossfade toggle
+        elements.crossfadeToggle.addEventListener('change', function () {
+            state.crossfadeEnabled = this.checked;
+            Notify.info(`Crossfade ${state.crossfadeEnabled ? 'enabled' : 'disabled'}`);
+            saveToLocalStorage();
+        });
+
+        // Crossfade duration
+        elements.crossfadeDurationSlider.addEventListener('input', function () {
+            state.crossfadeDuration = parseFloat(this.value);
+            elements.crossfadeValueDisplay.textContent = `${state.crossfadeDuration}s`;
+            saveToLocalStorage();
+        });
+
+
+    }
+    
 });
 
 
