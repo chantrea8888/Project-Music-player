@@ -2024,9 +2024,24 @@ document.addEventListener('DOMContentLoaded', function () {
             saveToLocalStorage();
         });
 
+        // ============================================
+        // SEARCH EVENT LISTENERS
+        // ============================================
+
+        // Global search input
+        elements.globalSearchInput.addEventListener('input', function () {
+            const query = this.value.trim();
+            elements.searchClearBtn.style.display = query ? 'block' : 'none';
+
+            if (query.length > 0) {
+                performSearch(query, state.searchFilter);
+            } else {
+                clearSearchResults();
+            }
+        });
 
     }
-    
+
 });
 
 
