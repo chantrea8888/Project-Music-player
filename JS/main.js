@@ -2046,6 +2046,23 @@ document.addEventListener('DOMContentLoaded', function () {
             elements.globalSearchInput.focus();
         });
 
+        // Search filter buttons
+        elements.searchFilterBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                // Remove active class from all filter buttons
+                elements.searchFilterBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                this.classList.add('active');
+
+                const filter = this.getAttribute('data-filter');
+                state.searchFilter = filter;
+
+                if (state.searchQuery && state.searchQuery.length > 0) {
+                    performSearch(state.searchQuery, filter);
+                }
+            });
+        });
+
     }
 
 });
