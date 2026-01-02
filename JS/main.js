@@ -1398,6 +1398,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
         updateSidebarPlaylists();
     }
+    // Update sidebar play list
+    function updateSidebarPlaylists() {
+        elements.sidebarPlaylists.innerHTML = '';
+
+        state.playlists.forEach(playlist => {
+            const playlistItem = document.createElement('div');
+            playlistItem.className = 'd-flex align-items-center mb-2 playlist-sidebar-item';
+            playlistItem.style.cursor = 'pointer';
+            playlistItem.innerHTML = `
+                        <div class="rounded me-2" style="width: 40px; height: 40px; background-image: url('${playlist.image}'); background-size: cover;"></div>
+                        <div>
+                            <p class="mb-0 fw-bold">${playlist.name}</p>
+                            <p class="mb-0 small opacity-75">${playlist.songs.length} songs</p>
+                        </div>
+                    `;
+            playlistItem.addEventListener('click', function () {
+                playPlaylist(playlist.id);
+                showSection('library');
+            });
+
+            elements.sidebarPlaylists.appendChild(playlistItem);
+        });
+    }
 });
 
 
