@@ -1688,6 +1688,21 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+    // LOCALSTORAGE FUNCTIONS
+    function saveToLocalStorage() {
+        const appState = {
+            currentSongIndex: state.currentSongIndex,
+            isPlaying: state.isPlaying,
+            isShuffled: state.isShuffled,
+            isLooping: state.isLooping,
+            volume: state.volume,
+            playlists: state.playlists,
+            currentPlaylist: state.currentPlaylist.map(song => song.id),
+            searchSettings: state.searchSettings
+        };
+
+        localStorage.setItem('musicPlayerState', JSON.stringify(appState));
+    }
 
 });
 
