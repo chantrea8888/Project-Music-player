@@ -2040,6 +2040,12 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
+        // Search clear button
+        elements.searchClearBtn.addEventListener('click', function () {
+            clearSearchResults();
+            elements.globalSearchInput.focus();
+        });
+
     }
 
 });
