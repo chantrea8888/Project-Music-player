@@ -2099,6 +2099,68 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         });
+        // Advanced search button
+        elements.advancedSearchBtn.addEventListener('click', function () {
+            Swal.fire({
+                title: 'Advanced Search Filters',
+                html: `
+                            <div class="text-start">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="adv-search-uploads" ${state.searchSettings.includeUploads ? 'checked' : ''}>
+                                    <label class="form-check-label" for="adv-search-uploads">
+                                        Include uploaded songs in search
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="adv-search-case" ${state.searchSettings.caseSensitive ? 'checked' : ''}>
+                                    <label class="form-check-label" for="adv-search-case">
+                                        Case-sensitive search
+                                    </label>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="adv-search-limit" class="form-label">Results per category: <span id="adv-limit-value">${state.searchSettings.resultsLimit}</span></label>
+                                    <input type="range" class="form-range" id="adv-search-limit" min="5" max="50" value="${state.searchSettings.resultsLimit}">
+                                </div>
+                            </div>
+                        `,
+                showCancelButton: true,
+                confirmButtonText: 'Apply Filters',
+                preConfirm: () => {
+                    return {
+                        includeUploads: document.getElementById('adv-search-uploads').checked,
+                        caseSensitive: document.getElementById('adv-search-case').checked,
+                        resultsLimit: parseInt(document.getElementById('adv-search-limit').value)
+                    };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    state.searchSettings = result.value;
+                    saveToLocalStorage();
+
+                    // Update UI
+                    document.getElementById('search-include-uploads').checked = state.searchSettings.includeUploads;
+                    document.getElementById('search-case-sensitive').checked = state.searchSettings.caseSensitive;
+                    document.getElementById('search-results-limit').value = state.searchSettings.resultsLimit;
+                    document.getElementById('search-results-limit-value').textContent = `${state.searchSettings.resultsLimit} results per category`;
+
+                    // Re-run search if there's a query
+                    if (state.searchQuery && state.searchQuery.length > 0) {
+                        performSearch(state.searchQuery, state.searchFilter);
+                    }
+
+                    Notify.success('Search filters updated');
+                }
+            });
+
+            // Update range value display
+            const limitSlider = document.getElementById('adv-search-limit');
+            const limitValue = document.getElementById('adv-limit-value');
+            if (limitSlider && limitValue) {
+                limitSlider.addEventListener('input', function () {
+                    limitValue.textContent = this.value;
+                });
+            }
+        });
 
     }
 
