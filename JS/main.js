@@ -1421,7 +1421,7 @@ document.addEventListener('DOMContentLoaded', function () {
             elements.sidebarPlaylists.appendChild(playlistItem);
         });
     }
-    
+
     // Create a new playlist
     function createNewPlaylist() {
         Swal.fire({
@@ -1471,7 +1471,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 Notify.success('Playlist created successfully');
                 updateStatus(`Created playlist: ${newPlaylist.name}`, "ok");
 
-                
+
                 // Ask if they want to add songs now
                 Swal.fire({
                     title: 'Add Songs?',
@@ -1488,6 +1488,77 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+    // ============================================
+    // FILE UPLOAD FUNCTIONS
+    // ============================================
+
+    function handleFileUpload(files) {
+        let uploadedCount = 0;
+        let uploadedNames = [];
+
+        Array.from(files).forEach(file => {
+            if (!file.type.startsWith('audio/')) {
+                Notify.warning(`Skipped ${file.name}: Not an audio file`);
+                return;
+            }
+
+            if (file.size > 50 * 1024 * 1024) {
+                Notify.warning(`Skipped ${file.name}: File too large (max 50MB)`);
+                return;
+            }
+
+            const fileUrl = URL.createObjectURL(file);
+            const fileName = file.name.replace(/\.[^/.]+$/, "");
+
+            const newSong = {
+                id: Date.now() + Math.floor(Math.random() * 1000),
+                title: fileName,
+                artist: "Unknown Artist",
+                duration: "0:00",
+                albumArt: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                fileUrl: fileUrl,
+                lyrics: [],
+                album: "User Uploads",
+                genre: ["Unknown"],
+                year: new Date().getFullYear()
+            };
+
+            const uploadedSongs = getUploadedSongsFromLocalStorage();
+            uploadedSongs.push(newSong);
+            saveUploadedSongsToLocalStorage(uploadedSongs);
+
+            uploadedCount++;
+            uploadedNames.push(fileName);
+
+            const audio = new Audio(fileUrl);
+            audio.addEventListener('loadedmetadata', function () {
+                newSong.duration = formatTime(audio.duration);
+                const uploadedSongs = getUploadedSongsFromLocalStorage();
+                const songIndex = uploadedSongs.findIndex(s => s.id === newSong.id);
+                if (songIndex !== -1) {
+                    uploadedSongs[songIndex].duration = newSong.duration;
+                    saveUploadedSongsToLocalStorage(uploadedSongs);
+                    updateUploadedSongs();
+                    initializeAllSongs();
+                }
+            });
+        });
+
+        if (uploadedCount > 0) {
+            let message = `Successfully uploaded ${uploadedCount} song(s)`;
+            if (uploadedNames.length <= 3) {
+                message += `: ${uploadedNames.join(', ')}`;
+            } else {
+                message += `: ${uploadedNames.slice(0, 3).join(', ')} and ${uploadedNames.length - 3} more`;
+            }
+
+            Notify.success(message);
+            updateUploadedSongs();
+            initializeAllSongs();
+            updateStatus(`Uploaded ${uploadedCount} song(s)`, "ok");
+        }
+    }
+    
 });
 
 
