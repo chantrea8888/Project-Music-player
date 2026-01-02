@@ -1421,6 +1421,7 @@ document.addEventListener('DOMContentLoaded', function () {
             elements.sidebarPlaylists.appendChild(playlistItem);
         });
     }
+    
     // Create a new playlist
     function createNewPlaylist() {
         Swal.fire({
