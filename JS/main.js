@@ -1770,6 +1770,9 @@ document.addEventListener('DOMContentLoaded', function () {
         return uploadedSongs ? JSON.parse(uploadedSongs) : [];
     }
 
+    function saveUploadedSongsToLocalStorage(songs) {
+        localStorage.setItem('uploadedSongs', JSON.stringify(songs));
+    }
 });
 
 
