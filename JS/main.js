@@ -1703,7 +1703,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         localStorage.setItem('musicPlayerState', JSON.stringify(appState));
     }
-    
+
     function loadFromLocalStorage() {
         const savedState = localStorage.getItem('musicPlayerState');
         if (savedState) {
@@ -1763,6 +1763,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         initializeAllSongs();
+    }
+
+    function getUploadedSongsFromLocalStorage() {
+        const uploadedSongs = localStorage.getItem('uploadedSongs');
+        return uploadedSongs ? JSON.parse(uploadedSongs) : [];
     }
 
 });
