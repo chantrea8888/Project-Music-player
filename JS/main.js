@@ -741,97 +741,97 @@ document.addEventListener('DOMContentLoaded', function () {
             elements.searchAlbumsResults.classList.add('d-none');
         }
     }
-});
-//Play song by ID
-function playSongById(songId) {
-    const allSongs = getAllSongs();
-    const song = allSongs.find(s => s.id === songId);
-
-    if (song) {
-        // Find the song in current playlist or add it
-        const currentPlaylistIndex = state.currentPlaylist.findIndex(s => s.id === songId);
-
-        if (currentPlaylistIndex !== -1) {
-            playSong(currentPlaylistIndex);
-        } else {
-            // Add song to current playlist and play it
-            state.currentPlaylist = [song];
+    //Play song by ID
+    function playSongById(songId) {
+        const allSongs = getAllSongs();
+        const song = allSongs.find(s => s.id === songId);
+    
+        if (song) {
+            // Find the song in current playlist or add it
+            const currentPlaylistIndex = state.currentPlaylist.findIndex(s => s.id === songId);
+    
+            if (currentPlaylistIndex !== -1) {
+                playSong(currentPlaylistIndex);
+            } else {
+                // Add song to current playlist and play it
+                state.currentPlaylist = [song];
+                state.currentSongIndex = 0;
+                if (state.audioElement) {
+                    state.audioElement.pause();
+                }
+                initAudioElement();
+                state.audioElement.play().catch(e => {
+                    console.error("Error playing audio:", e);
+                });
+                updateNowPlayingList();
+                showSection('library');
+                updateStatus(`Playing: ${song.title}`, "ok");
+            }
+        }
+    }
+    //Add song to current playlist by ID
+    function addSongToCurrentPlaylist(songId) {
+        const allSongs = getAllSongs();
+        const song = allSongs.find(song => song.id === songId);
+    
+        if (song) {
+            // Check if song is already in playlist
+            const isAlreadyInPlaylist = state.currentPlaylist.some(s => s.id === songId);
+    
+            if (!isAlreadyInPlaylist) {
+                state.currentPlaylist.push(song);
+                updateNowPlayingList();
+                updateSearchStatistics();
+                Notify.success(`"${song.title}" added to current playlist`);
+                updateStatus(`Added to playlist: ${song.title}`, "ok");
+            } else {
+                Notify.info(`"${song.title}" is already in the playlist`);
+            }
+        }
+    }
+    // Play all songs by an artist
+    function playArtist(artistName) {
+        const artistSongs = getAllSongs().filter(song => song.artist === artistName);
+    
+        if (artistSongs.length > 0) {
+            state.currentPlaylist = artistSongs;
             state.currentSongIndex = 0;
+    
             if (state.audioElement) {
                 state.audioElement.pause();
             }
+    
             initAudioElement();
             state.audioElement.play().catch(e => {
                 console.error("Error playing audio:", e);
             });
-            updateNowPlayingList();
+    
             showSection('library');
-            updateStatus(`Playing: ${song.title}`, "ok");
+            Notify.success(`Now playing: ${artistName}`);
+            updateStatus(`Playing artist: ${artistName}`, "ok");
         }
     }
-}
-//Add song to current playlist by ID
-function addSongToCurrentPlaylist(songId) {
-    const allSongs = getAllSongs();
-    const song = allSongs.find(song => song.id === songId);
-
-    if (song) {
-        // Check if song is already in playlist
-        const isAlreadyInPlaylist = state.currentPlaylist.some(s => s.id === songId);
-
-        if (!isAlreadyInPlaylist) {
-            state.currentPlaylist.push(song);
-            updateNowPlayingList();
-            updateSearchStatistics();
-            Notify.success(`"${song.title}" added to current playlist`);
-            updateStatus(`Added to playlist: ${song.title}`, "ok");
-        } else {
-            Notify.info(`"${song.title}" is already in the playlist`);
+    // Purpose:  all songs from an album
+    function playAlbum(albumName) {
+        const albumSongs = getAllSongs().filter(song => song.album === albumName);
+    
+        if (albumSongs.length > 0) {
+            state.currentPlaylist = albumSongs;
+            state.currPlayentSongIndex = 0;
+    
+            if (state.audioElement) {
+                state.audioElement.pause();
+            }
+    
+            initAudioElement();
+            state.audioElement.play().catch(e => {
+                console.error("Error playing audio:", e);
+            });
+    
+            showSection('library');
+            Notify.success(`Now playing: ${albumName}`);
+            updateStatus(`Playing album: ${albumName}`, "ok");
         }
     }
-}
-// Play all songs by an artist
-function playArtist(artistName) {
-    const artistSongs = getAllSongs().filter(song => song.artist === artistName);
-
-    if (artistSongs.length > 0) {
-        state.currentPlaylist = artistSongs;
-        state.currentSongIndex = 0;
-
-        if (state.audioElement) {
-            state.audioElement.pause();
-        }
-
-        initAudioElement();
-        state.audioElement.play().catch(e => {
-            console.error("Error playing audio:", e);
-        });
-
-        showSection('library');
-        Notify.success(`Now playing: ${artistName}`);
-        updateStatus(`Playing artist: ${artistName}`, "ok");
-    }
-}
-// Purpose:  all songs from an album
-function playAlbum(albumName) {
-    const albumSongs = getAllSongs().filter(song => song.album === albumName);
-
-    if (albumSongs.length > 0) {
-        state.currentPlaylist = albumSongs;
-        state.currPlayentSongIndex = 0;
-
-        if (state.audioElement) {
-            state.audioElement.pause();
-        }
-
-        initAudioElement();
-        state.audioElement.play().catch(e => {
-            console.error("Error playing audio:", e);
-        });
-
-        showSection('library');
-        Notify.success(`Now playing: ${albumName}`);
-        updateStatus(`Playing album: ${albumName}`, "ok");
-    }
-}
+});
 
