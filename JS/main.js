@@ -1130,5 +1130,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
         playSong(nextIndex);
     }
+    // function play previous song
+    function playPrevSong() {
+        let prevIndex;
+        if (state.currentSongIndex === 0) {
+            prevIndex = state.currentPlaylist.length - 1;
+        } else {
+            prevIndex = state.currentSongIndex - 1;
+        }
+
+        playSong(prevIndex);
+    }
 });
 
