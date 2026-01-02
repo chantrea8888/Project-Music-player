@@ -1773,6 +1773,77 @@ document.addEventListener('DOMContentLoaded', function () {
     function saveUploadedSongsToLocalStorage(songs) {
         localStorage.setItem('uploadedSongs', JSON.stringify(songs));
     }
+    // ============================================
+    // HELPER FUNCTIONS
+    // ============================================
+
+    function showSection(sectionName) {
+        // Hide all sections
+        elements.librarySection.classList.add('d-none');
+        elements.playlistsSection.classList.add('d-none');
+        elements.uploadSection.classList.add('d-none');
+        elements.lyricsSection.classList.add('d-none');
+        elements.searchSection.classList.add('d-none');
+        elements.settingsSection.classList.add('d-none');
+
+        // Hide global search in non-library/search sections
+        if (sectionName !== 'library' && sectionName !== 'search') {
+            elements.globalSearchContainer.classList.add('d-none');
+        } else {
+            elements.globalSearchContainer.classList.remove('d-none');
+        }
+
+        // Remove active class from all nav items
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('active');
+        });
+
+        // Show selected section and activate corresponding nav item
+        switch (sectionName) {
+            case 'library':
+                elements.librarySection.classList.remove('d-none');
+                elements.navLibrary.parentElement.classList.add('active');
+                break;
+            case 'playlists':
+                elements.playlistsSection.classList.remove('d-none');
+                updatePlaylistsDisplay();
+                elements.navPlaylists.parentElement.classList.add('active');
+                break;
+            case 'upload':
+                elements.uploadSection.classList.remove('d-none');
+                updateUploadedSongs();
+                elements.navUpload.parentElement.classList.add('active');
+                break;
+            case 'lyrics':
+                elements.lyricsSection.classList.remove('d-none');
+                updateLyrics();
+                elements.navLyrics.parentElement.classList.add('active');
+                break;
+            case 'search':
+                elements.searchSection.classList.remove('d-none');
+                elements.navSearch.parentElement.classList.add('active');
+                // If there's a search query, perform search
+                if (state.searchQuery) {
+                    performSearch(state.searchQuery, state.searchFilter);
+                }
+                break;
+            case 'settings':
+                elements.settingsSection.classList.remove('d-none');
+                elements.navSettings.parentElement.classList.add('active');
+                break;
+        }
+    }
+
+    function updateStatus(message, type = "ok") {
+        elements.statusIndicator.classList.remove('d-none', 'status-ok', 'status-warning', 'status-error');
+        elements.statusIndicator.classList.add(`status-${type}`);
+        elements.statusMessage.textContent = message;
+
+        clearTimeout(window.statusTimeout);
+        window.statusTimeout = setTimeout(() => {
+            elements.statusIndicator.classList.add('d-none');
+        }, 5000);
+    }
 });
 
 
