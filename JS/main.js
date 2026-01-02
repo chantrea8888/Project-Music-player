@@ -742,4 +742,31 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 });
+//Play song by ID
+function playSongById(songId) {
+    const allSongs = getAllSongs();
+    const song = allSongs.find(s => s.id === songId);
 
+    if (song) {
+        // Find the song in current playlist or add it
+        const currentPlaylistIndex = state.currentPlaylist.findIndex(s => s.id === songId);
+
+        if (currentPlaylistIndex !== -1) {
+            playSong(currentPlaylistIndex);
+        } else {
+            // Add song to current playlist and play it
+            state.currentPlaylist = [song];
+            state.currentSongIndex = 0;
+            if (state.audioElement) {
+                state.audioElement.pause();
+            }
+            initAudioElement();
+            state.audioElement.play().catch(e => {
+                console.error("Error playing audio:", e);
+            });
+            updateNowPlayingList();
+            showSection('library');
+            updateStatus(`Playing: ${song.title}`, "ok");
+        }
+    }
+}
