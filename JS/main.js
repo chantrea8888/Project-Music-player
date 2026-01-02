@@ -1173,5 +1173,54 @@ document.addEventListener('DOMContentLoaded', function () {
         Notify.success(`Now playing: ${playlist.name}`);
     }
 
+    // ============================================
+    // UI UPDATE FUNCTIONS
+    // ============================================
+
+    function formatTime(seconds) {
+        if (isNaN(seconds)) return "0:00";
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    function updateProgress() {
+        if (!state.audioElement) return;
+
+        const currentTime = state.audioElement.currentTime;
+        const duration = state.audioElement.duration;
+
+        if (duration) {
+            const progressPercent = (currentTime / duration) * 100;
+            elements.progressBar.style.width = `${progressPercent}%`;
+            elements.currentTimeEl.textContent = formatTime(currentTime);
+            updateLyrics(currentTime);
+        }
+    }
+
+    function updateSongInfo() {
+        const currentSong = state.currentPlaylist[state.currentSongIndex];
+        if (!currentSong) return;
+
+        elements.songTitleEl.textContent = currentSong.title;
+        elements.songArtistEl.textContent = currentSong.artist;
+        elements.albumArtEl.src = currentSong.albumArt;
+        elements.totalTimeEl.textContent = currentSong.duration;
+    }
+
+    function updatePlayPauseButton() {
+        const icon = elements.playPauseBtn.querySelector('i');
+        if (state.isPlaying) {
+            icon.classList.remove('fa-play');
+            icon.classList.add('fa-pause');
+            elements.playPauseBtn.title = "Pause";
+        } else {
+            icon.classList.remove('fa-pause');
+            icon.classList.add('fa-play');
+            elements.playPauseBtn.title = "Play";
+        }
+    }
+
 });
+
 
