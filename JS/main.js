@@ -812,4 +812,26 @@ function playArtist(artistName) {
         updateStatus(`Playing artist: ${artistName}`, "ok");
     }
 }
+// Purpose:  all songs from an album
+function playAlbum(albumName) {
+    const albumSongs = getAllSongs().filter(song => song.album === albumName);
+
+    if (albumSongs.length > 0) {
+        state.currentPlaylist = albumSongs;
+        state.currPlayentSongIndex = 0;
+
+        if (state.audioElement) {
+            state.audioElement.pause();
+        }
+
+        initAudioElement();
+        state.audioElement.play().catch(e => {
+            console.error("Error playing audio:", e);
+        });
+
+        showSection('library');
+        Notify.success(`Now playing: ${albumName}`);
+        updateStatus(`Playing album: ${albumName}`, "ok");
+    }
+}
 
