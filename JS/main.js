@@ -2390,6 +2390,94 @@ document.addEventListener('DOMContentLoaded', function () {
             saveToLocalStorage();
         });
 
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function (e) {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+            elements.keyboardHint.classList.remove('d-none');
+            clearTimeout(window.hideKeyboardHint);
+            window.hideKeyboardHint = setTimeout(() => {
+                elements.keyboardHint.classList.add('d-none');
+            }, 3000);
+
+            switch (e.key.toLowerCase()) {
+                case ' ':
+                case 'k':
+                    e.preventDefault();
+                    if (state.audioElement) {
+                        if (state.isPlaying) {
+                            state.audioElement.pause();
+                        } else {
+                            state.audioElement.play().catch(err => console.error(err));
+                        }
+                    }
+                    break;
+                case 'n':
+                case 'arrowright':
+                    e.preventDefault();
+                    playNextSong();
+                    break;
+                case 'p':
+                case 'arrowleft':
+                    e.preventDefault();
+                    playPrevSong();
+                    break;
+                case 'f':
+                    e.preventDefault();
+                    const currentSong = state.currentPlaylist[state.currentSongIndex];
+                    if (currentSong) {
+                        Notify.success(`"${currentSong.title}" added to favorites`);
+                        updateStatus(`Added to favorites: ${currentSong.title}`, "ok");
+                    }
+                    break;
+                case 'm':
+                    e.preventDefault();
+                    if (state.audioElement) {
+                        state.audioElement.muted = !state.audioElement.muted;
+                        Notify.info(state.audioElement.muted ? 'Audio muted' : 'Audio unmuted');
+                    }
+                    break;
+                case 'l':
+                    e.preventDefault();
+                    toggleLoop();
+                    break;
+                case '/':
+                    if (e.ctrlKey || e.metaKey) {
+                        e.preventDefault();
+                        elements.globalSearchInput.focus();
+                        showSection('search');
+                    }
+                    break;
+                case 'escape':
+                    if (elements.globalSearchInput === document.activeElement) {
+                        clearSearchResults();
+                    }
+                    break;
+                case '?':
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'Keyboard Shortcuts',
+                        html: `
+                                    <div class="text-start">
+                                        <p><kbd>Space</kbd> or <kbd>K</kbd> - Play/Pause</p>
+                                        <p><kbd>N</kbd> or <kbd>→</kbd> - Next Song</p>
+                                        <p><kbd>P</kbd> or <kbd>←</kbd> - Previous Song</p>
+                                        <p><kbd>F</kbd> - Favorite Current Song</p>
+                                        <p><kbd>M</kbd> - Mute/Unmute</p>
+                                        <p><kbd>L</kbd> - Toggle Loop</p>
+                                        <p><kbd>Ctrl</kbd> + <kbd>/</kbd> - Focus Search</p>
+                                        <p><kbd>Esc</kbd> - Clear Search</p>
+                                        <p><kbd>?</kbd> - Show this help</p>
+                                    </div>
+                                `,
+                        icon: 'info',
+                        confirmButtonText: 'Got it!',
+                        width: '500px'
+                    });
+                    break;
+            }
+        });
+
 
     }
 
