@@ -1471,6 +1471,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 Notify.success('Playlist created successfully');
                 updateStatus(`Created playlist: ${newPlaylist.name}`, "ok");
 
+                
                 // Ask if they want to add songs now
                 Swal.fire({
                     title: 'Add Songs?',
