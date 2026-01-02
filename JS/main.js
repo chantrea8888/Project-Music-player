@@ -1876,6 +1876,31 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+    function startInteractiveTutorial() {
+        const steps = [
+            {
+                element: elements.globalSearchInput,
+                message: 'Search for songs, artists, albums, or playlists here',
+                position: 'bottom'
+            },
+            {
+                element: elements.playPauseBtn,
+                message: 'Play or pause music with this button',
+                position: 'top'
+            },
+            {
+                element: elements.quickSearchBtn,
+                message: 'Quickly access search from anywhere',
+                position: 'left'
+            },
+            {
+                element: elements.createPlaylistBtn,
+                message: 'Create and manage your playlists here',
+                position: 'top'
+            }
+        ];
+    }
 });
 
 
