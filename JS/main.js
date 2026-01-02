@@ -1056,5 +1056,40 @@ document.addEventListener('DOMContentLoaded', function () {
         const uploadedSongs = getUploadedSongsFromLocalStorage();
         return [...sampleSongs, ...uploadedSongs];
     }
+    // Initialize audio element (simplified for this example)
+    function initAudioElement() {
+        const currentSong = state.currentPlaylist[state.currentSongIndex];
+        if (!currentSong) return;
+
+        if (state.audioElement) {
+            state.audioElement.pause();
+            state.audioElement = null;
+        }
+
+        state.audioElement = new Audio(currentSong.fileUrl);
+        state.audioElement.volume = state.volume / 100;
+
+        // Set up audio event listeners
+        state.audioElement.addEventListener('timeupdate', updateProgress);
+        state.audioElement.addEventListener('loadedmetadata', function () {
+            elements.totalTimeEl.textContent = formatTime(state.audioElement.duration);
+        });
+        state.audioElement.addEventListener('ended', playNextSong);
+        state.audioElement.addEventListener('play', function () {
+            state.isPlaying = true;
+            updatePlayPauseButton();
+            updateNowPlayingList();
+            updateLyrics();
+            document.querySelector('.player-container').classList.add('playing');
+        });
+        state.audioElement.addEventListener('pause', function () {
+            state.isPlaying = false;
+            updatePlayPauseButton();
+            document.querySelector('.player-container').classList.remove('playing');
+        });
+
+        updateSongInfo();
+        updateNowPlayingList();
+    }
 });
 
