@@ -2243,6 +2243,58 @@ document.addEventListener('DOMContentLoaded', function () {
                 handleFileUpload(e.dataTransfer.files);
             }
         });
+        // Add to playlist button
+        elements.addToPlaylistBtn.addEventListener('click', function () {
+            const currentSong = state.currentPlaylist[state.currentSongIndex];
+            if (!currentSong) {
+                Notify.warning('No song is currently playing');
+                return;
+            }
+
+            if (state.playlists.length === 0) {
+                Swal.fire({
+                    title: 'No Playlists',
+                    text: 'You need to create a playlist first. Would you like to create one now?',
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonText: 'Create Playlist',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        createNewPlaylist();
+                    }
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: 'Add to Playlist',
+                text: `Add "${currentSong.title}" to which playlist?`,
+                input: 'select',
+                inputOptions: state.playlists.reduce((options, playlist) => {
+                    options[playlist.id] = playlist.name;
+                    return options;
+                }, {}),
+                showCancelButton: true,
+                confirmButtonText: 'Add',
+                preConfirm: (playlistId) => {
+                    const playlist = state.playlists.find(p => p.id === parseInt(playlistId));
+                    if (playlist && !playlist.songs.includes(currentSong.id)) {
+                        playlist.songs.push(currentSong.id);
+                        saveToLocalStorage();
+                        return true;
+                    } else if (playlist && playlist.songs.includes(currentSong.id)) {
+                        Swal.showValidationMessage('This song is already in the playlist');
+                        return false;
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed && result.value) {
+                    Notify.success('Song added to playlist');
+                    updateStatus(`Added "${currentSong.title}" to playlist`, "ok");
+                }
+            });
+        });
 
     }
 
