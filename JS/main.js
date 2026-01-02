@@ -1284,6 +1284,49 @@ document.addEventListener('DOMContentLoaded', function () {
 
         updateSearchStatistics();
     }
+    // Remove song from current play list
+    function removeSongFromCurrentPlaylist(index) {
+        if (index >= 0 && index < state.currentPlaylist.length) {
+            const songTitle = state.currentPlaylist[index].title;
+
+            Swal.fire({
+                title: 'Remove Song?',
+                text: `Are you sure you want to remove "${songTitle}" from the playlist?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, remove it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    state.currentPlaylist.splice(index, 1);
+
+                    // Adjust current song index if needed
+                    if (state.currentSongIndex >= index && state.currentSongIndex > 0) {
+                        state.currentSongIndex--;
+                    }
+
+                    if (state.currentPlaylist.length === 0) {
+                        state.currentSongIndex = 0;
+                        if (state.audioElement) {
+                            state.audioElement.pause();
+                            state.isPlaying = false;
+                            updatePlayPauseButton();
+                        }
+                    } else if (state.currentSongIndex >= state.currentPlaylist.length) {
+                        state.currentSongIndex = state.currentPlaylist.length - 1;
+                    }
+
+                    updateNowPlayingList();
+                    updateSongInfo();
+                    saveToLocalStorage();
+
+                    Notify.success(`"${songTitle}" removed from playlist`);
+                    updateStatus(`Removed: ${songTitle}`, "ok");
+                }
+            });
+        }
+    }
 });
 
 
