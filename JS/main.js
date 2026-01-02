@@ -1558,7 +1558,89 @@ document.addEventListener('DOMContentLoaded', function () {
             updateStatus(`Uploaded ${uploadedCount} song(s)`, "ok");
         }
     }
-    
+
+    function updateUploadedSongs() {
+        const uploadedSongs = getUploadedSongsFromLocalStorage();
+
+        if (uploadedSongs.length === 0) {
+            elements.uploadedSongs.innerHTML = `
+                        <div class="text-center py-4">
+                            <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No songs uploaded yet</h5>
+                            <p class="text-muted">Drag and drop audio files or click "Browse Files" to upload</p>
+                        </div>
+                    `;
+            return;
+        }
+
+        elements.uploadedSongs.innerHTML = '';
+
+        uploadedSongs.forEach((song, index) => {
+            const songElement = document.createElement('div');
+            songElement.className = 'playlist-item song-item';
+            songElement.innerHTML = `
+                        <img src="${song.albumArt}" alt="${song.title}">
+                        <div class="playlist-info">
+                            <h6>${song.title}</h6>
+                            <p>${song.artist || 'Unknown Artist'}</p>
+                        </div>
+                        <div class="song-duration">${song.duration || '0:00'}</div>
+                        <div class="action-buttons ms-2">
+                            <button class="btn btn-sm btn-outline-secondary play-uploaded-btn" data-index="${index}" title="Play">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-custom add-uploaded-to-playlist-btn" data-index="${index}" title="Add to Playlist">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger delete-uploaded-btn" data-index="${index}" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+
+            const playBtn = songElement.querySelector('.play-uploaded-btn');
+            playBtn.addEventListener('click', function () {
+                state.currentPlaylist = [song];
+                state.currentSongIndex = 0;
+                initAudioElement();
+                state.audioElement.play().catch(e => {
+                    console.error("Error playing audio:", e);
+                });
+                showSection('library');
+            });
+
+            const addBtn = songElement.querySelector('.add-uploaded-to-playlist-btn');
+            addBtn.addEventListener('click', function () {
+                addUploadedSongToPlaylist(song);
+            });
+
+            const deleteBtn = songElement.querySelector('.delete-uploaded-btn');
+            deleteBtn.addEventListener('click', function () {
+                Swal.fire({
+                    title: 'Delete Song?',
+                    text: `Are you sure you want to delete "${song.title}"?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const uploadedSongs = getUploadedSongsFromLocalStorage();
+                        uploadedSongs.splice(index, 1);
+                        saveUploadedSongsToLocalStorage(uploadedSongs);
+                        updateUploadedSongs();
+                        initializeAllSongs();
+                        Notify.success('Song deleted successfully');
+                        updateStatus(`Deleted: ${song.title}`, "ok");
+                    }
+                });
+            });
+
+            elements.uploadedSongs.appendChild(songElement);
+        });
+    }
+
 });
 
 
