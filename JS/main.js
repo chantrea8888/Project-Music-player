@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const sampleSongs = [
         {
             id: 1,
-            title: "Time to right",
+            title: "Time to rise",
             artist: "Vannda",
             duration: "5:02",
             albumArt: "https://i.scdn.co/image/ab67616d0000b273f8f43e519cd0e7cacd1f09e5",
