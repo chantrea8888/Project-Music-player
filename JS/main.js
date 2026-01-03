@@ -54,11 +54,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const sampleSongs = [
         {
             id: 1,
-            title: "",
-            artist: "",
-            duration: "3:20",
-            albumArt: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-            fileUrl: "https://assets.codepen.io/4358584/Blinding-Lights.mp3",
+            title: "Time to right",
+            artist: "Vannda",
+            duration: "5:02",
+            albumArt: "https://i.scdn.co/image/ab67616d0000b273f8f43e519cd0e7cacd1f09e5",
+            fileUrl: "music/VannDa-វណ្ណដា_Time_To_Right.mp3",
             lyrics: [
             ],
             album: "After Hours",
