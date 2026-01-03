@@ -55,27 +55,40 @@ document.addEventListener('DOMContentLoaded', function () {
         {
             id: 1,
             title: "Time to rise",
-            artist: "Vannda",
+            artist: "វណ្ណដា-Vannda",
             duration: "5:02",
             albumArt: "https://i.scdn.co/image/ab67616d0000b273f8f43e519cd0e7cacd1f09e5",
             fileUrl: "music/VannDa-វណ្ណដា_Time_To_Right.mp3",
             lyrics: [
             ],
-            album: "After Hours",
-            genre: ["Pop", "R&B",],
+            album: "វណ្ណដា-Vannda",
+            genre: ["Rap", "R&B",],
             year: 2019
         },
         {
             id: 2,
             title: "MAMA",
-            artist: "Vannda",
+            artist: "វណ្ណដា-Vannda",
             duration: "7:15",
             albumArt: "https://i.ytimg.com/vi/WNL3zDgWZc0/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCZQkljpmtab4Pn064gxL3ig1AZiA",
             fileUrl: "music/MAMA.mp3",
             lyrics: [
             ],
-            album: "After Hours",
-            genre: ["Rapper", "R&B",],
+            album: "វណ្ណដា-Vannda",
+            genre: ["Rap", "R&B",],
+            year: 2019
+        },
+        {
+            id: 3,
+            title: "Catch Me If You Can",
+            artist: "វណ្ណដា-Vannda",
+            duration: "5:42",
+            albumArt: "https://linkstorage.linkfire.com/medialinks/images/b2b2ffdf-caee-485f-b2f7-89cfd37faa2f/artwork-440x440.jpg",
+            fileUrl: "music/Vannda-Catch-Me-If-You-Can.mp3",
+            lyrics: [
+            ],
+            album: "វណ្ណដា-Vannda",
+            genre: ["Rap", "R&B",],
             year: 2019
         },
     ];
