@@ -62,7 +62,20 @@ document.addEventListener('DOMContentLoaded', function () {
             lyrics: [
             ],
             album: "After Hours",
-            genre: ["Pop", "R&B", "Synthwave"],
+            genre: ["Pop", "R&B",],
+            year: 2019
+        },
+        {
+            id: 2,
+            title: "MAMA",
+            artist: "Vannda",
+            duration: "7:15",
+            albumArt: "https://i.ytimg.com/vi/WNL3zDgWZc0/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCZQkljpmtab4Pn064gxL3ig1AZiA",
+            fileUrl: "music/MAMA.mp3",
+            lyrics: [
+            ],
+            album: "After Hours",
+            genre: ["Rapper", "R&B",],
             year: 2019
         },
     ];
