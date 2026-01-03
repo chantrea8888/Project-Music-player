@@ -54,91 +54,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const sampleSongs = [
         {
             id: 1,
-            title: "Blinding Lights",
-            artist: "The Weeknd",
+            title: "",
+            artist: "",
             duration: "3:20",
             albumArt: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
             fileUrl: "https://assets.codepen.io/4358584/Blinding-Lights.mp3",
             lyrics: [
-                { time: 0, text: "I been tryna call" },
-                { time: 5, text: "I been on my own for long enough" },
-                { time: 10, text: "Maybe you can show me how to love, maybe" },
-                { time: 15, text: "I'm going through withdrawals" },
-                { time: 20, text: "You don't even have to do too much" },
-                { time: 25, text: "You can turn me on with just a touch, baby" }
             ],
             album: "After Hours",
             genre: ["Pop", "R&B", "Synthwave"],
             year: 2019
         },
-        {
-            id: 2,
-            title: "Stay",
-            artist: "The Kid LAROI, Justin Bieber",
-            duration: "2:21",
-            albumArt: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-            fileUrl: "https://assets.codepen.io/4358584/Stay.mp3",
-            lyrics: [
-                { time: 0, text: "I do the same thing I told you that I never would" },
-                { time: 5, text: "I told you I'd change, even when I knew I never could" },
-                { time: 10, text: "I know that I can't find nobody else as good as you" },
-                { time: 15, text: "I need you to stay, need you to stay, hey" }
-            ],
-            album: "F*CK LOVE 3: OVER YOU",
-            genre: ["Pop", "Hip Hop"],
-            year: 2021
-        },
-        {
-            id: 3,
-            title: "Good 4 U",
-            artist: "Olivia Rodrigo",
-            duration: "2:58",
-            albumArt: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-            fileUrl: "https://assets.codepen.io/4358584/Good-4-U.mp3",
-            lyrics: [
-                { time: 0, text: "Well, good for you, I guess you moved on really easily" },
-                { time: 5, text: "You found a new girl and it only took a couple weeks" },
-                { time: 10, text: "Remember when you said that you wanted to give me the world?" },
-                { time: 15, text: "And good for you, I guess that you've been working on yourself" }
-            ],
-            album: "SOUR",
-            genre: ["Pop Punk", "Pop Rock"],
-            year: 2021
-        },
-        {
-            id: 4,
-            title: "Levitating",
-            artist: "Dua Lipa",
-            duration: "3:23",
-            albumArt: "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-            fileUrl: "https://assets.codepen.io/4358584/Levitating.mp3",
-            lyrics: [
-                { time: 0, text: "If you wanna run away with me, I know a galaxy" },
-                { time: 5, text: "And I can take you for a ride" },
-                { time: 10, text: "I had a premonition that we fell into a rhythm" },
-                { time: 15, text: "Where the music don't stop for life" }
-            ],
-            album: "Future Nostalgia",
-            genre: ["Disco", "Pop"],
-            year: 2020
-        },
-        {
-            id: 5,
-            title: "Heat Waves",
-            artist: "Glass Animals",
-            duration: "3:58",
-            albumArt: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-            fileUrl: "https://assets.codepen.io/4358584/Heat-Waves.mp3",
-            lyrics: [
-                { time: 0, text: "Road shimmer, wiggling the vision" },
-                { time: 5, text: "Heat heat waves, I'm swimming in a mirror" },
-                { time: 10, text: "Road shimmer, wiggling the vision" },
-                { time: 15, text: "Heat heat waves, I'm swimming in a" }
-            ],
-            album: "Dreamland",
-            genre: ["Indie Pop", "Alternative"],
-            year: 2020
-        }
     ];
 
     const samplePlaylists = [
@@ -147,22 +73,8 @@ document.addEventListener('DOMContentLoaded', function () {
             name: "Favorites",
             description: "My all-time favorite tracks",
             songs: [1, 2, 5],
-            image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+            image: "https://static.vecteezy.com/system/resources/thumbnails/013/743/624/small_2x/favorite-music-heart-icon-png.png"
         },
-        {
-            id: 2,
-            name: "Workout Mix",
-            description: "High-energy songs for workouts",
-            songs: [1, 4, 5],
-            image: "https://images.unsplash.com/photo-1536922246289-88c42f957773?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-        },
-        {
-            id: 3,
-            name: "Chill Vibes",
-            description: "Relaxing music for winding down",
-            songs: [2, 3],
-            image: "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-        }
     ];
 
 
@@ -861,7 +773,7 @@ document.addEventListener('DOMContentLoaded', function () {
             showCancelButton: true,
             confirmButtonText: 'Play Album',
             cancelButtonText: 'Close',
-            confirmButtonColor: '#4361ee'
+            confirmButtonColor: '#e1073b'
         }).then((result) => {
             if (result.isConfirmed) {
                 playAlbum(albumName);
@@ -898,7 +810,7 @@ document.addEventListener('DOMContentLoaded', function () {
             showCancelButton: true,
             confirmButtonText: 'Play Playlist',
             cancelButtonText: 'Close',
-            confirmButtonColor: '#4361ee',
+            confirmButtonColor: '#e1073b',
             width: '600px'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -961,7 +873,7 @@ document.addEventListener('DOMContentLoaded', function () {
             showCancelButton: true,
             confirmButtonText: 'Save Changes',
             cancelButtonText: 'Cancel',
-            confirmButtonColor: '#4361ee',
+            confirmButtonColor: '#e1073b',
             width: '600px',
             preConfirm: () => {
                 const name = document.getElementById('edit-playlist-name').value;
@@ -1441,7 +1353,7 @@ document.addEventListener('DOMContentLoaded', function () {
             showCancelButton: true,
             confirmButtonText: 'Create Playlist',
             cancelButtonText: 'Cancel',
-            confirmButtonColor: '#4361ee',
+            confirmButtonColor: '#e1073b',
             preConfirm: () => {
                 const name = document.getElementById('new-playlist-name').value;
                 const desc = document.getElementById('new-playlist-desc').value;
@@ -2556,7 +2468,7 @@ document.addEventListener('DOMContentLoaded', function () {
             showQuickTutorial();
         }, 1000);
 
-        updateStatus("HarmonyStream ready! Search your music library.", "ok");
+        updateStatus("Music Player ready! Search your music library.", "ok");
 
         // Auto-play first song after a moment
         setTimeout(() => {
