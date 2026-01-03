@@ -20,11 +20,6 @@ document.addEventListener('DOMContentLoaded', function () {
         analyserNode: null,
         audioElement: null,
 
-        // Crossfade feature
-        crossfadeEnabled: true,
-        crossfadeDuration: 3.0,
-        nextSongScheduled: false,
-
         // Visualization
         animationFrameId: null,
 
@@ -137,13 +132,8 @@ document.addEventListener('DOMContentLoaded', function () {
         // Lyrics
         lyricsContainer: document.getElementById('lyrics-container'),
 
-        // Visualization
-        visualizerCanvas: document.getElementById('visualizer-canvas'),
-        visualizerCtx: null,
-
         // Crossfade
         crossfadeToggle: document.getElementById('crossfade-toggle'),
-        crossfadeDurationSlider: document.getElementById('crossfade-duration'),
         crossfadeValueDisplay: document.getElementById('crossfade-value'),
 
         // SEARCH ELEMENTS
@@ -220,11 +210,6 @@ document.addEventListener('DOMContentLoaded', function () {
         // Keyboard hint
         keyboardHint: document.getElementById('keyboard-hint')
     };
-
-    // Initialize canvas context
-    if (elements.visualizerCanvas) {
-        elements.visualizerCtx = elements.visualizerCanvas.getContext('2d');
-    }
 
     // ============================================
     // SEARCH FEATURE FUNCTIONS
@@ -1948,20 +1933,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // Crossfade toggle
-        elements.crossfadeToggle.addEventListener('change', function () {
-            state.crossfadeEnabled = this.checked;
-            Notify.info(`Crossfade ${state.crossfadeEnabled ? 'enabled' : 'disabled'}`);
-            saveToLocalStorage();
-        });
-
-        // Crossfade duration
-        elements.crossfadeDurationSlider.addEventListener('input', function () {
-            state.crossfadeDuration = parseFloat(this.value);
-            elements.crossfadeValueDisplay.textContent = `${state.crossfadeDuration}s`;
-            saveToLocalStorage();
-        });
-
         // ============================================
         // SEARCH EVENT LISTENERS
         // ============================================
@@ -2482,13 +2453,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Show initial section
         showSection('library');
-
-        // Set canvas dimensions
-        if (elements.visualizerCanvas) {
-            elements.visualizerCanvas.width = elements.visualizerCanvas.parentElement.clientWidth;
-            elements.visualizerCanvas.height = elements.visualizerCanvas.parentElement.clientHeight;
-        }
-
+        
         // Show welcome tutorial (first time only)
         setTimeout(() => {
             showQuickTutorial();
