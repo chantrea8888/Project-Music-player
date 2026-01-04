@@ -84,7 +84,59 @@ document.addEventListener('DOMContentLoaded', function () {
             ],
             album: "វណ្ណដា-Vannda",
             genre: ["Rap", "R&B",],
-            year: 2019
+            year: 2021
+        },
+        {
+            id: 4,
+            title: "មេឃបើកថ្ងៃ",
+            artist: "វណ្ណដា-Vannda x KWAN",
+            duration: "3:48",
+            albumArt: "images/ពេលមេឃបើកថ្ងៃ.png",
+            fileUrl: "music/មេឃបើកថ្ងៃ.mp3",
+            lyrics: [
+            ],
+            album: "វណ្ណដា-Vannda",
+            genre: ["Rap", "R&B",],
+            year: 2024
+        },
+        {
+            id: 5,
+            title: "WOODEN BOX",
+            artist: "វណ្ណដា-Vannda",
+            duration: "3:48",
+            albumArt: "https://i.ytimg.com/vi/O-n9cWeS7Is/sddefault.jpg",
+            fileUrl: "music/WOODEN-BOX.mp3",
+            lyrics: [
+            ],
+            album: "វណ្ណដា-Vannda",
+            genre: ["Rap", "R&B",],
+            year: 2020
+        },
+        {
+            id: 6,
+            title: "កម្លោះស្រុកខ្មែរ",
+            artist: "វណ្ណដា-Vannda x វណ្ណថាន់-Vanthan",
+            duration: "3:48",
+            albumArt: "https://i.scdn.co/image/ab67616d0000b273e5fdf77426bfa1a4819da82b",
+            fileUrl: "music/Vanthan_x_VannDa_កម្លោះស្រុកខ្មែរ_Official_Video.mp3",
+            lyrics: [
+            ],
+            album: "វណ្ណដា-Vannda",
+            genre: ["Rap", "R&B",],
+            year: 2020
+        },
+        {
+            id: 7,
+            title: "ជំងឺនឹកគេ",
+            artist: "សុខមាន-Sokmean",
+            duration: "3:48",
+            albumArt: "images/ជំងឺនឹកគេ.png",
+            fileUrl: "music/ជម្ងឺនឹកគេ-Sokmean.mp3",
+            lyrics: [
+            ],
+            album: "សុខមាន-Sokmean",
+            genre: ["", "",],
+            year: 2022
         },
     ];
 
@@ -93,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
             id: 1,
             name: "Favorites",
             description: "My all-time favorite tracks",
-            songs: [1, 2, 5],
+            songs: [1,],
             image: "https://static.vecteezy.com/system/resources/thumbnails/013/743/624/small_2x/favorite-music-heart-icon-png.png"
         },
     ];
@@ -1436,12 +1488,12 @@ document.addEventListener('DOMContentLoaded', function () {
             const newSong = {
                 id: Date.now() + Math.floor(Math.random() * 1000),
                 title: fileName,
-                artist: "Unknown Artist",
+                artist: "វណ្ណដា-Vannda",
                 duration: "0:00",
-                albumArt: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                albumArt: "https://i.scdn.co/image/ab67616d00001e027f02dc270f18f1eda681600f",
                 fileUrl: fileUrl,
                 lyrics: [],
-                album: "User Uploads",
+                album: "វណ្ណដា-Vannda",
                 genre: ["Unknown"],
                 year: new Date().getFullYear()
             };
@@ -1544,7 +1596,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     text: `Are you sure you want to delete "${song.title}"?`,
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#d33',
+                    confirmButtonColor: '#e1073b',
                     cancelButtonColor: '#3085d6',
                     confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
@@ -2472,7 +2524,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }, 2000);
     }
-
     // Start the application
     initApp();
 
